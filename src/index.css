@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-municipal-blue: #1A73E3;
+  --color-municipal-darkBlue: #1557B0;
+  --color-municipal-lightBlue: #E8F0FE;
+
+  --color-eco-green: #0F9D58;
+  --color-eco-darkGreen: #0B8043;
+  --color-eco-lightGreen: #E6F4EA;
+
+  --color-civic-yellow: #F59E0B;
+  --color-civic-lightYellow: #FEF3C7;
+  --color-civic-darkYellow: #D97706;
+
+  --color-action-red: #DC3545;
+  --color-action-lightRed: #FCE8E6;
+
+  --color-base-white: #FFFFFF;
+  --color-base-offWhite: #F8F9FA;
+  --color-base-slate: #F1F5F9;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #0f172a;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Custom phone frame scrollbar */
+.phone-screen-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.phone-screen-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.phone-screen-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+/* Touch feedback animation */
+.touch-active {
+  transition: transform 0.1s ease, opacity 0.1s ease;
+}
+.touch-active:active {
+  transform: scale(0.97);
+  opacity: 0.9;
+}
