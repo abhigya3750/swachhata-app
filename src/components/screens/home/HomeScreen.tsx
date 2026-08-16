@@ -14,16 +14,9 @@ import {
   Flame,
   Award,
   ShieldCheck,
-  Activity,
-  Gauge,
-  Phone,
-  Volume2,
-  Info,
-  Leaf,
   Building,
   Store
 } from 'lucide-react';
-import { MOCK_DRIVER_DATA } from '../../../data/mockData';
 
 const HomeScreen: React.FC = () => {
   const {
@@ -37,25 +30,18 @@ const HomeScreen: React.FC = () => {
   } = useAppState();
 
   const [showCleanCitySealModal, setShowCleanCitySealModal] = useState<boolean>(false);
-  const [showVanDetailsModal, setShowVanDetailsModal] = useState<boolean>(false);
-  const [isPlayingChime, setIsPlayingChime] = useState<boolean>(false);
-
-  const handlePlayChime = () => {
-    setIsPlayingChime(true);
-    setTimeout(() => setIsPlayingChime(false), 3000);
-  };
 
   return (
     <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 font-sans">
       
-      {/* 1. Municipal Blue Header & 8x National Cleanest City Seal */}
+      {/* 1. Clean Municipal Blue Header with 8x National Cleanest City Seal */}
       <div className="bg-gradient-to-r from-municipal-blue via-blue-600 to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md relative overflow-hidden">
         {/* Subtle background decorative emblem */}
         <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
 
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <div className="flex items-center gap-1.5 text-blue-100 text-xs font-semibold mb-0.5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-1.5 text-blue-100 text-xs font-semibold">
               <span>{language === 'hi' ? 'इंदौर नगर निगम' : 'Indore Municipal Corporation'}</span>
               <span>•</span>
               <span className="text-emerald-300 font-bold">{selectedWard.name}</span>
@@ -63,17 +49,12 @@ const HomeScreen: React.FC = () => {
             <h2 className="text-lg font-bold text-white tracking-tight">
               {language === 'hi' ? 'नमस्ते, राजेश कुमार 👋' : 'Namaste, Rajesh Kumar 👋'}
             </h2>
-            <p className="text-[11px] text-blue-100/80 mt-0.5 font-medium">
-              {language === 'hi'
-                ? 'प्रोजेक्ट वाइस (WISE) • एकीकृत स्वच्छता एवं कचरा प्रबंधन'
-                : 'Project WISE • Waste Integrated Sanitation Platform'}
-            </p>
           </div>
 
           {/* Prestigious 8x Clean City Achievement Seal (Clickable for details) */}
           <button
             onClick={() => setShowCleanCitySealModal(true)}
-            className="group relative flex flex-col items-center bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 text-slate-950 p-2 rounded-2xl shadow-lg border border-amber-200 hover:scale-105 active:scale-95 transition-transform shrink-0"
+            className="group relative flex flex-col items-center bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 text-slate-950 px-3 py-1.5 rounded-2xl shadow-lg border border-amber-200 hover:scale-105 active:scale-95 transition-transform shrink-0"
             title="View Swachh Survekshan 8x National Award Seal"
           >
             <div className="flex items-center gap-0.5 text-[8px] font-black tracking-tighter text-amber-950 uppercase">
@@ -88,28 +69,13 @@ const HomeScreen: React.FC = () => {
             </div>
           </button>
         </div>
-
-        {/* Live Ward Cleanliness Health Bar */}
-        <div className="mt-3 pt-2.5 border-t border-white/20 flex items-center justify-between text-[11px]">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span className="text-blue-100 font-medium">
-              {language === 'hi' ? 'वार्ड स्वच्छता स्कोर:' : 'Ward Cleanliness Score:'}
-            </span>
-            <span className="font-bold text-emerald-300">98.6%</span>
-          </div>
-          <div className="text-[10px] text-blue-200 font-medium flex items-center gap-1">
-            <Leaf className="w-3 h-3 text-emerald-300" />
-            <span>100% Door-to-Door Segregated</span>
-          </div>
-        </div>
       </div>
 
-      {/* 2. Live Fleet Radar Box & Advanced Vehicle #42 Telematics Card */}
+      {/* 2. Live Fleet Radar Box */}
       <section className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-eco-darkGreen flex items-center justify-center font-bold shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-emerald-100 text-eco-darkGreen flex items-center justify-center font-bold shadow-sm shrink-0">
               <Truck className="w-4 h-4 text-eco-green" />
             </div>
             <div>
@@ -125,75 +91,33 @@ const HomeScreen: React.FC = () => {
 
           <button
             onClick={() => navigateTo('full_map')}
-            className="text-[11px] font-bold text-municipal-blue hover:text-municipal-darkBlue flex items-center gap-0.5 bg-municipal-lightBlue px-2.5 py-1 rounded-full border border-municipal-blue/20 transition touch-active"
+            className="text-[11px] font-bold text-municipal-blue hover:text-municipal-darkBlue flex items-center gap-0.5 bg-municipal-lightBlue px-2.5 py-1 rounded-full border border-municipal-blue/20 transition touch-active shrink-0"
           >
             <span>{language === 'hi' ? 'पूरा नक्शा देखें' : 'View Full Map'}</span>
             <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
-        {/* Dynamic Proximity Banner & Dedicated Vehicle #42 HUD */}
+        {/* Clean Proximity Banner */}
         {vanStatus === 'nearby' && (
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 space-y-2.5 shadow-sm">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-eco-green flex items-center justify-center">
-                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 shadow-sm flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-3.5 h-3.5 rounded-full bg-eco-green flex items-center justify-center shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+              </div>
+              <div>
+                <div className="text-xs font-bold text-emerald-950">
+                  {language === 'hi' ? 'कचरा गाड़ी ~3 मिनट में आ रही है' : 'Garbage Van Arriving in ~3 mins'}
                 </div>
-                <div>
-                  <div className="text-xs font-bold text-emerald-950">
-                    {language === 'hi' ? 'कचरा गाड़ी ~3 मिनट में आ रही है' : 'Garbage Van Arriving in ~3 mins'}
-                  </div>
-                  <div className="text-[10px] text-emerald-700">
-                    Entering Scheme 54 Residential Lane
-                  </div>
+                <div className="text-[10px] text-emerald-700">
+                  Entering Scheme 54 Residential Lane
                 </div>
               </div>
-
-              {/* Enhanced Vehicle #42 Telematics Badge (Clickable for full specs) */}
-              <button
-                onClick={() => setShowVanDetailsModal(true)}
-                className="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1 shadow-sm transition"
-              >
-                <Truck className="w-3.5 h-3.5" />
-                <span>Tipper #42</span>
-                <Info className="w-3 h-3 text-emerald-200 ml-0.5" />
-              </button>
             </div>
 
-            {/* Vehicle Live Telematics Strip */}
-            <div className="grid grid-cols-3 gap-2 pt-1 border-t border-emerald-200/60 text-[10px]">
-              <div className="bg-white/80 rounded-lg p-1.5 border border-emerald-100 text-center">
-                <span className="text-slate-400 block font-medium">Speed</span>
-                <span className="font-bold text-slate-800 flex items-center justify-center gap-0.5">
-                  <Gauge className="w-3 h-3 text-emerald-600" /> 16 km/h
-                </span>
-              </div>
-
-              <div className="bg-white/80 rounded-lg p-1.5 border border-emerald-100 text-center">
-                <span className="text-slate-400 block font-medium">Lane Route</span>
-                <span className="font-bold text-slate-800">14/18 Done</span>
-              </div>
-
-              <div className="bg-white/80 rounded-lg p-1.5 border border-emerald-100 text-center">
-                <span className="text-slate-400 block font-medium">Compartments</span>
-                <span className="font-bold text-emerald-800">Wet/Dry OK</span>
-              </div>
-            </div>
-
-            {/* Arrival Chime Action Button */}
-            <div className="flex items-center justify-between pt-1">
-              <span className="text-[10px] text-emerald-800 font-medium">
-                Driver: <strong>Ramesh Sharma</strong>
-              </span>
-              <button
-                onClick={handlePlayChime}
-                className="text-[10px] bg-white border border-emerald-300 text-emerald-800 font-bold px-2 py-0.5 rounded-lg flex items-center gap-1 hover:bg-emerald-100 transition"
-              >
-                <Volume2 className={`w-3 h-3 text-emerald-600 ${isPlayingChime ? 'animate-bounce text-emerald-700' : ''}`} />
-                <span>{isPlayingChime ? 'Chime Playing 🎵' : 'Test Swachh Chime'}</span>
-              </button>
-            </div>
+            <span className="bg-emerald-600 text-white px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 shadow-xs">
+              Tipper #42
+            </span>
           </div>
         )}
 
@@ -233,7 +157,7 @@ const HomeScreen: React.FC = () => {
         />
       </section>
 
-      {/* 3. New Quick Civic Utilities Bar (Toilet Locator & Commercial Flow) */}
+      {/* 3. Quick Civic Utilities Bar (Toilet Locator & Commercial Flow) */}
       <section className="grid grid-cols-2 gap-3">
         <div
           onClick={() => navigateTo('toilet_locator')}
@@ -242,12 +166,12 @@ const HomeScreen: React.FC = () => {
           <div className="w-9 h-9 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
             <Building className="w-4 h-4" />
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
-              <span>{language === 'hi' ? 'सार्वजनिक शौचालय' : 'Public Toilets'}</span>
-              <span className="bg-pink-100 text-pink-700 text-[8px] font-bold px-1 rounded">Pink</span>
+              <span className="truncate">{language === 'hi' ? 'सार्वजनिक शौचालय' : 'Public Toilets'}</span>
+              <span className="bg-pink-100 text-pink-700 text-[8px] font-bold px-1 rounded shrink-0">Pink</span>
             </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
               {language === 'hi' ? '5-स्टार CT/PT व शी-लाउंज' : 'Find nearest clean restrooms'}
             </p>
           </div>
@@ -260,12 +184,12 @@ const HomeScreen: React.FC = () => {
           <div className="w-9 h-9 rounded-xl bg-blue-100 text-municipal-blue flex items-center justify-center shrink-0">
             <Store className="w-4 h-4" />
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
-              <span>{language === 'hi' ? 'व्यावसायिक कचरा' : 'Commercial'}</span>
-              <span className="bg-blue-100 text-blue-700 text-[8px] font-bold px-1 rounded">GST</span>
+              <span className="truncate">{language === 'hi' ? 'व्यावसायिक कचरा' : 'Commercial'}</span>
+              <span className="bg-blue-100 text-blue-700 text-[8px] font-bold px-1 rounded shrink-0">GST</span>
             </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight">
+            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
               {language === 'hi' ? 'दुकान व होटल पिकअप' : 'Shops & market logistics'}
             </p>
           </div>
@@ -279,12 +203,12 @@ const HomeScreen: React.FC = () => {
         onClick={() => navigateTo('bill_summary')}
         className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-center justify-between"
       >
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-3 min-w-0 flex-1">
           <div className="w-10 h-10 rounded-xl bg-municipal-lightBlue text-municipal-blue flex items-center justify-center shrink-0">
             <CreditCard className="w-5 h-5" />
           </div>
-          <div>
-            <div className="text-xs font-bold text-slate-900">
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-bold text-slate-900 truncate">
               {language === 'hi' ? 'कचरा प्रबंधन शुल्क बिल' : 'Waste Utility Bill Payment'}
             </div>
 
@@ -313,7 +237,7 @@ const HomeScreen: React.FC = () => {
           </div>
         </div>
 
-        <ArrowRight className="w-4 h-4 text-slate-400" />
+        <ArrowRight className="w-4 h-4 text-slate-400 shrink-0 ml-2" />
       </section>
 
       {/* Card B: On-Demand Bulk Waste Pickup */}
@@ -321,15 +245,15 @@ const HomeScreen: React.FC = () => {
         onClick={() => navigateTo('pickup_waste_type')}
         className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-4 shadow-md cursor-pointer hover:brightness-105 transition touch-active flex items-center justify-between"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur text-white flex items-center justify-center shrink-0">
             <PackageCheck className="w-5 h-5" />
           </div>
-          <div>
-            <div className="text-xs font-bold">
+          <div className="min-w-0 flex-1">
+            <div className="text-xs font-bold truncate">
               {language === 'hi' ? 'बल्क कचरा पिकअप (Porter स्टाइल)' : 'On-Demand Bulk Pickup'}
             </div>
-            <p className="text-[11px] text-emerald-100 opacity-90 mt-0.5">
+            <p className="text-[11px] text-emerald-100 opacity-90 mt-0.5 line-clamp-1">
               {language === 'hi'
                 ? 'सूखा/मलबे/बगीचे का कचरा उठाने हेतु वाहन बुक करें'
                 : 'Book dedicated vehicle for heavy debris & bulk scrap'}
@@ -337,7 +261,7 @@ const HomeScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 ml-2">
           <ArrowRight className="w-4 h-4 text-white" />
         </div>
       </section>
@@ -355,7 +279,7 @@ const HomeScreen: React.FC = () => {
             <div className="text-xs font-bold text-amber-950">
               {language === 'hi' ? 'पवित्र पुष्प कचरा' : 'Pavitra Sacred Pickup'}
             </div>
-            <p className="text-[10px] text-amber-800 mt-0.5">
+            <p className="text-[10px] text-amber-800 mt-0.5 line-clamp-1">
               {language === 'hi' ? 'पूजा/फूल कचरा नि:शुल्क पिकअप' : 'Free floral waste schedule'}
             </p>
           </div>
@@ -372,7 +296,7 @@ const HomeScreen: React.FC = () => {
             <div className="text-xs font-bold text-emerald-950">
               {language === 'hi' ? 'इको-स्टोर बाज़ार' : 'Eco-Store SHG Market'}
             </div>
-            <p className="text-[10px] text-emerald-800 mt-0.5">
+            <p className="text-[10px] text-emerald-800 mt-0.5 line-clamp-1">
               {language === 'hi'
                 ? `इको कॉइन्स: ${ecoPoints} PTS • 80G छूट`
                 : `Balance: ${ecoPoints} PTS • 80G Tax Free`}
@@ -381,7 +305,7 @@ const HomeScreen: React.FC = () => {
         </div>
       </section>
 
-      {/* MODAL 1: Swachh Survekshan 8-Time National Award Modal */}
+      {/* MODAL: Swachh Survekshan 8-Time National Award Modal */}
       <Modal
         isOpen={showCleanCitySealModal}
         onClose={() => setShowCleanCitySealModal(false)}
@@ -433,99 +357,8 @@ const HomeScreen: React.FC = () => {
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900 flex items-start gap-2">
             <ShieldCheck className="w-4 h-4 text-municipal-blue shrink-0 mt-0.5" />
             <p className="text-[11px] leading-relaxed">
-              Every citizen’s daily waste segregation at source directly powers Indore’s Bio-CNG city buses and sustainable SHG compost initiatives under <strong>Project WISE</strong>.
+              Every citizen’s daily waste segregation at source directly powers Indore’s Bio-CNG city buses and sustainable SHG compost initiatives.
             </p>
-          </div>
-        </div>
-      </Modal>
-
-      {/* MODAL 2: Tipper Van #42 Live Telematics & Spec Modal */}
-      <Modal
-        isOpen={showVanDetailsModal}
-        onClose={() => setShowVanDetailsModal(false)}
-        title="Vehicle #42 Telematics & Crew"
-      >
-        <div className="space-y-4 p-2 text-slate-800 font-sans text-xs">
-          {/* Driver & Van Card */}
-          <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src={MOCK_DRIVER_DATA.driverPhoto}
-                alt={MOCK_DRIVER_DATA.driverName}
-                className="w-12 h-12 rounded-full object-cover border-2 border-emerald-500 shadow-sm"
-              />
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h4 className="font-bold text-slate-900 text-sm">{MOCK_DRIVER_DATA.driverName}</h4>
-                  <Badge variant="success">★ {MOCK_DRIVER_DATA.rating}</Badge>
-                </div>
-                <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                  {MOCK_DRIVER_DATA.vehicleNumber} • Tipper Van #42
-                </div>
-              </div>
-            </div>
-
-            <a
-              href={`tel:${MOCK_DRIVER_DATA.driverPhone}`}
-              className="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-md min-h-touch min-w-touch"
-            >
-              <Phone className="w-4 h-4 fill-current" />
-            </a>
-          </div>
-
-          {/* Real-time Compartment Levels */}
-          <div className="space-y-2">
-            <span className="font-bold text-slate-800 block text-xs">
-              Live Bin Compartment Capacity (IOT Telemetry):
-            </span>
-
-            <div>
-              <div className="flex justify-between text-[11px] text-slate-600 mb-1">
-                <span>Wet Waste (गीला कचरा)</span>
-                <span className="font-bold text-emerald-700">65% Full</span>
-              </div>
-              <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-eco-green h-full rounded-full w-[65%]"></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-[11px] text-slate-600 mb-1">
-                <span>Dry Recyclables (सूखा कचरा)</span>
-                <span className="font-bold text-blue-700">42% Full</span>
-              </div>
-              <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-municipal-blue h-full rounded-full w-[42%]"></div>
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between text-[11px] text-slate-600 mb-1">
-                <span>Domestic Hazardous / Sanitary</span>
-                <span className="font-bold text-amber-700">18% Full</span>
-              </div>
-              <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                <div className="bg-civic-yellow h-full rounded-full w-[18%]"></div>
-              </div>
-            </div>
-          </div>
-
-          {/* Vehicle Status Table */}
-          <div className="p-3 bg-slate-100 rounded-xl space-y-1.5 text-[11px]">
-            <div className="flex justify-between">
-              <span className="text-slate-500">Route Assigned:</span>
-              <span className="font-bold">Ward 34 • Scheme 54 Arterial</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">GPS Status:</span>
-              <span className="font-bold text-emerald-700 flex items-center gap-1">
-                <Activity className="w-3 h-3 text-emerald-600" /> Active (18 km/h)
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Target Transfer GTS:</span>
-              <span className="font-bold">GTS Depot #3 (Palasia)</span>
-            </div>
           </div>
         </div>
       </Modal>
