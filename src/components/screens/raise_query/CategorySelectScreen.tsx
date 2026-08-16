@@ -22,7 +22,8 @@ import {
   ShieldAlert,
   UserX,
   Flame,
-  ArrowRight
+  ArrowRight,
+  Gift
 } from 'lucide-react';
 
 const CategorySelectScreen: React.FC = () => {
@@ -61,22 +62,62 @@ const CategorySelectScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6">
-      {/* Municipal Blue Top Header Card (Matching Profile Styling) */}
-      <div className="bg-gradient-to-r from-municipal-blue to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md space-y-1">
+    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 font-sans">
+      {/* Municipal Blue Top Header Card */}
+      <div className="bg-gradient-to-r from-municipal-blue via-blue-600 to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md space-y-1">
         <h2 className="text-base font-bold">
           {language === 'hi' ? 'शिकायत श्रेणी का चयन करें' : 'Select Complaint Category'}
         </h2>
-        <p className="text-xs text-blue-100/90">
+        <p className="text-xs text-blue-100/90 font-medium">
           {language === 'hi'
-            ? 'त्वरित समाधान हेतु नगर निगम शिकायत पोर्टल'
+            ? 'त्वरित समाधान हेतु नगर निगम शिकायत एवं स्पॉट-ए-डंप सेवा'
             : 'Tap the category that best describes your sanitation issue'}
         </p>
       </div>
 
+      {/* Community Spot-a-Dump Featured Banner (+50 PTS Reward) */}
+      <div
+        onClick={() =>
+          handleSelectCategory({
+            id: 'spot_a_dump',
+            title: 'Community Spot-a-Dump (+50 PTS)',
+            titleHi: 'स्पॉट-ए-डंप (इनाम +50 PTS)',
+            iconName: 'sparkles',
+            description: 'Report open garbage dump & earn 50 Eco-Points reward',
+            descriptionHi: 'खुले कचरे के ढेर की रिपोर्ट करें और 50 पॉइंट्स पाएं',
+            isPrimary: true,
+            rewardPoints: 50,
+          })
+        }
+        className="bg-gradient-to-r from-amber-500 via-amber-600 to-orange-600 text-white rounded-2xl p-4 shadow-md cursor-pointer hover:scale-[1.02] active:scale-95 transition transform flex items-center justify-between border-2 border-amber-300"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur text-white flex items-center justify-center shrink-0 border border-white/30 shadow-inner">
+            <Gift className="w-6 h-6 animate-bounce text-yellow-200" />
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-black uppercase tracking-wider">
+                {language === 'hi' ? 'स्पॉट-ए-डंप (इनाम पाएं)' : 'Spot-a-Dump (Earn Rewards)'}
+              </span>
+              <span className="bg-white text-amber-900 text-[9px] font-black px-1.5 py-0.2 rounded-full shadow-xs">
+                +50 PTS
+              </span>
+            </div>
+            <p className="text-[11px] text-amber-100 mt-0.5 leading-tight">
+              {language === 'hi'
+                ? 'सड़क या खाली प्लॉट पर कचरे के ढेर की फोटो भेजें और 50 पॉइंट्स पाएं'
+                : 'Report public dump with photo proof & get 50 Eco-Points for Eco-Store'}
+            </p>
+          </div>
+        </div>
+
+        <ArrowRight className="w-4 h-4 text-white shrink-0" />
+      </div>
+
       {/* 6 Primary Cards Grid */}
       <div className="grid grid-cols-2 gap-3">
-        {PRIMARY_CATEGORIES.map((cat) => {
+        {PRIMARY_CATEGORIES.filter((c) => c.id !== 'spot_a_dump').map((cat) => {
           const IconComp = getCategoryIcon(cat.iconName);
           return (
             <div

@@ -13,14 +13,17 @@ import type {
   ComplaintTicket,
   ChatMessage,
   EcoProduct,
-  WastePickupOption
+  WastePickupOption,
+  PublicToilet,
+  CommercialWasteBooking
 } from '../types';
 import {
   MOCK_WARDS,
   MOCK_PROPERTY_TAX,
   MOCK_PAST_TRANSACTIONS,
   INITIAL_SAVED_ADDRESSES,
-  INITIAL_COMPLAINT
+  INITIAL_COMPLAINT,
+  MOCK_PUBLIC_TOILETS
 } from '../data/mockData';
 
 interface AppStateContextType {
@@ -86,6 +89,16 @@ interface AppStateContextType {
   // Selected Category for Complaint Flow Handoff
   selectedComplaintCategory?: any;
   setSelectedComplaintCategory: (cat: any) => void;
+
+  // Public Toilet State
+  publicToilets: PublicToilet[];
+  
+  // Commercial Waste Booking State
+  commercialBooking: CommercialWasteBooking;
+  setCommercialBooking: React.Dispatch<React.SetStateAction<CommercialWasteBooking>>;
+
+  // Award Eco-Points on Community Dump Reporting
+  awardCommunityPoints: (points: number) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
@@ -94,10 +107,20 @@ const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'msg_1',
     sender: 'bot',
-    text: 'Namaste! 🙏 I am your Swachhata Assistant. How can I help you keep Indore clean today?',
+    text: 'Namaste! 🙏 I am your Swachhata Assistant for India’s 8-Time Cleanest City. How can I help you keep Indore clean today?',
     timestamp: 'Just now',
   },
 ];
+
+const INITIAL_COMMERCIAL_BOOKING: CommercialWasteBooking = {
+  businessName: 'Verma Sweet House & Restaurant',
+  gstNumber: '23AABCV1234F1Z8',
+  tradeType: 'restaurant',
+  wasteVolume: 'Daily Commercial Wet & Dry (50-80 kg)',
+  pickupSlot: 'Daily Evening (21:30 PM)',
+  monthlyFee: 650,
+  complianceCertId: 'IMC-COM-2026-8891',
+};
 
 export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
@@ -129,15 +152,22 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [selectedProduct, setSelectedProduct] = useState<EcoProduct | undefined>(undefined);
   const [selectedComplaintCategory, setSelectedComplaintCategory] = useState<any>(null);
   
+  const [publicToilets] = useState<PublicToilet[]>(MOCK_PUBLIC_TOILETS);
+  const [commercialBooking, setCommercialBooking] = useState<CommercialWasteBooking>(INITIAL_COMMERCIAL_BOOKING);
+
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
+
+  const awardCommunityPoints = (points: number) => {
+    setEcoPoints((prev) => prev + points);
+  };
 
   const navigateTo = (screen: ScreenId, params?: any) => {
     setScreenParams(params || null);
     setCurrentScreen(screen);
     setHistoryStack((prev) => [...prev, screen]);
 
-    // Sync tab highlight if navigating to main tab root
-    if (screen === 'home' || screen === 'full_map') setActiveTabState('home');
+    // Sync tab highlight
+    if (screen === 'home' || screen === 'full_map' || screen === 'toilet_locator' || screen === 'commercial_waste') setActiveTabState('home');
     else if (screen === 'category_select' || screen === 'evidence_location' || screen === 'complaint_confirm') setActiveTabState('raise_query');
     else if (screen === 'chat') setActiveTabState('chatbot');
     else if (screen === 'ecostore_grid' || screen === 'pavitra_scheduler' || screen === 'product_detail') setActiveTabState('ecostore');
@@ -190,6 +220,9 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const addTicket = (ticket: ComplaintTicket) => {
     setTickets((prev) => [ticket, ...prev]);
+    if (ticket.rewardPointsEarned) {
+      awardCommunityPoints(ticket.rewardPointsEarned);
+    }
   };
 
   const sendMessage = (text: string) => {
@@ -200,13 +233,21 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    // PRD: Free-text typed → shows one static canned reply + a "Would you like to raise this as a ticket?" button
+    let replyText = `I've registered your note regarding "${text}". If you'd like our sanitation supervisor to investigate this location, I can directly log a complaint ticket for your ward.`;
+    let showCTA = true;
+
+    if (text.toLowerCase().includes('toilet') || text.toLowerCase().includes('शौचालय')) {
+      replyText = `Found 4 clean Public Restrooms & She-Lounges near your location. Would you like to view the live toilet locator map?`;
+    } else if (text.toLowerCase().includes('dump') || text.toLowerCase().includes('spot') || text.toLowerCase().includes('कचरे का ढेर')) {
+      replyText = `You can report this open dump in Community Spot-a-Dump and earn +50 Eco-Points immediately upon submitting photo proof!`;
+    }
+
     const botMsg: ChatMessage = {
       id: `msg_${Date.now() + 1}`,
       sender: 'bot',
-      text: `I've registered your note regarding "${text}". If you'd like our sanitation supervisor to investigate this location, I can directly log a complaint ticket for your ward.`,
+      text: replyText,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      showTicketCTA: true,
+      showTicketCTA: showCTA,
     };
 
     setMessages((prev) => [...prev, userMsg, botMsg]);
@@ -219,6 +260,21 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         break;
       case 'chip_raise_complaint':
         navigateTo('category_select');
+        break;
+      case 'chip_spot_dump':
+        setSelectedComplaintCategory({
+          id: 'spot_a_dump',
+          title: 'Community Spot-a-Dump (+50 PTS)',
+          titleHi: 'स्पॉट-ए-डंप (इनाम +50 PTS)',
+          rewardPoints: 50,
+        });
+        navigateTo('evidence_location');
+        break;
+      case 'chip_toilets':
+        navigateTo('toilet_locator');
+        break;
+      case 'chip_commercial':
+        navigateTo('commercial_waste');
         break;
       case 'chip_track_van':
         navigateTo('full_map');
@@ -283,6 +339,10 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         handleChipClick,
         selectedComplaintCategory,
         setSelectedComplaintCategory,
+        publicToilets,
+        commercialBooking,
+        setCommercialBooking,
+        awardCommunityPoints,
       }}
     >
       {children}

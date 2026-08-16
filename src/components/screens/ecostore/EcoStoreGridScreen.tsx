@@ -3,20 +3,30 @@ import { useAppState } from '../../../context/AppStateContext';
 import { ECO_PRODUCTS } from '../../../data/mockData';
 import type { EcoProduct } from '../../../types';
 import { Badge } from '../../common/Badge';
-import { Sparkles, Flame, Star } from 'lucide-react';
+import { Sparkles, Flame, Star, Gift, ArrowRight } from 'lucide-react';
 
 const EcoStoreGridScreen: React.FC = () => {
-  const { language, navigateTo, ecoPoints, setSelectedProduct } = useAppState();
+  const { language, navigateTo, ecoPoints, setSelectedProduct, setSelectedComplaintCategory } = useAppState();
 
   const handleSelectProduct = (product: EcoProduct) => {
     setSelectedProduct(product);
     navigateTo('product_detail');
   };
 
+  const handleEarnPoints = () => {
+    setSelectedComplaintCategory({
+      id: 'spot_a_dump',
+      title: 'Community Spot-a-Dump (+50 PTS)',
+      titleHi: 'स्पॉट-ए-डंप (इनाम +50 PTS)',
+      rewardPoints: 50,
+    });
+    navigateTo('evidence_location');
+  };
+
   return (
-    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6">
-      {/* Municipal Blue Top Header Card (Matching Profile Styling) */}
-      <div className="bg-gradient-to-r from-municipal-blue to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
+    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 font-sans">
+      {/* Municipal Blue Top Header Card */}
+      <div className="bg-gradient-to-r from-municipal-blue via-blue-600 to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md flex items-center justify-between">
         <div>
           <div className="flex items-center gap-1.5 text-xs text-blue-100 font-semibold">
             <Sparkles className="w-4 h-4 text-amber-300" />
@@ -32,6 +42,23 @@ const EcoStoreGridScreen: React.FC = () => {
           <Flame className="w-3.5 h-3.5 text-amber-300" />
           <span>{language === 'hi' ? 'पवित्र वेस्ट' : 'Pavitra Pickup'}</span>
         </button>
+      </div>
+
+      {/* Earn Points via Spot-a-Dump Banner */}
+      <div
+        onClick={handleEarnPoints}
+        className="p-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl shadow-sm flex items-center justify-between cursor-pointer hover:scale-[1.01] transition"
+      >
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center">
+            <Gift className="w-4 h-4 text-yellow-200" />
+          </div>
+          <div>
+            <span className="text-xs font-bold block">Need more points?</span>
+            <span className="text-[10px] text-amber-100">Report an open dump in Spot-a-Dump & earn +50 PTS</span>
+          </div>
+        </div>
+        <ArrowRight className="w-4 h-4" />
       </div>
 
       {/* SHG Section Header */}

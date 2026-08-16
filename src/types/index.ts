@@ -25,7 +25,9 @@ export type ScreenId =
   | 'product_detail'
   | 'profile_home'
   | 'saved_addresses'
-  | 'helpdesk';
+  | 'helpdesk'
+  | 'commercial_waste'
+  | 'toilet_locator';
 
 export type BottomTab = 'home' | 'raise_query' | 'chatbot' | 'ecostore' | 'profile';
 
@@ -49,6 +51,7 @@ export interface Category {
   description: string;
   descriptionHi: string;
   isPrimary: boolean;
+  rewardPoints?: number;
 }
 
 export interface ComplaintTicket {
@@ -64,6 +67,7 @@ export interface ComplaintTicket {
   statusHi: 'प्रगति पर' | 'हल किया गया' | 'आबंटित';
   photoUrl?: string;
   note?: string;
+  rewardPointsEarned?: number;
 }
 
 export interface PropertyTax {
@@ -129,4 +133,32 @@ export interface ChatMessage {
   timestamp: string;
   actionChipId?: string;
   showTicketCTA?: boolean;
+  rewardPoints?: number;
+}
+
+export interface PublicToilet {
+  id: string;
+  name: string;
+  nameHi: string;
+  address: string;
+  distance: string;
+  rating: number;
+  reviewCount: number;
+  isPinkToilet: boolean; // She-Lounge for women
+  isFree: boolean;
+  isOpen24x7: boolean;
+  isWheelchairAccessible: boolean;
+  facilities: string[];
+  lat: number;
+  lng: number;
+}
+
+export interface CommercialWasteBooking {
+  businessName: string;
+  gstNumber: string;
+  tradeType: 'retail' | 'restaurant' | 'market' | 'wholesale';
+  wasteVolume: string;
+  pickupSlot: string;
+  monthlyFee: number;
+  complianceCertId: string;
 }

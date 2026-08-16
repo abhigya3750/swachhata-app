@@ -6,7 +6,8 @@ import type {
   WastePickupOption,
   EcoProduct,
   SavedAddress,
-  ComplaintTicket
+  ComplaintTicket,
+  PublicToilet
 } from '../types';
 
 export const MOCK_WARDS: Ward[] = [
@@ -20,6 +21,16 @@ export const MOCK_WARDS: Ward[] = [
 ];
 
 export const PRIMARY_CATEGORIES: Category[] = [
+  {
+    id: 'spot_a_dump',
+    title: 'Community Spot-a-Dump (+50 PTS)',
+    titleHi: 'स्पॉट-ए-डंप (इनाम +50 PTS)',
+    iconName: 'sparkles',
+    description: 'Report open garbage dump or public litter and earn 50 Eco-Points reward',
+    descriptionHi: 'खुले कचरे के ढेर की रिपोर्ट करें और 50 इको-पॉइंट्स इनाम पाएं',
+    isPrimary: true,
+    rewardPoints: 50,
+  },
   {
     id: 'truck_missed',
     title: 'Garbage Truck Missed',
@@ -270,3 +281,70 @@ export const INITIAL_COMPLAINT: ComplaintTicket = {
   status: 'In Progress',
   statusHi: 'प्रगति पर',
 };
+
+export const MOCK_PUBLIC_TOILETS: PublicToilet[] = [
+  {
+    id: 'pt_1',
+    name: 'She-Lounge Pink Restroom (Women Exclusive)',
+    nameHi: 'शी-लाउंज पिंक शौचालय (महिला विशेष)',
+    address: 'Near Palasia Square, AB Road',
+    distance: '180m',
+    rating: 4.9,
+    reviewCount: 342,
+    isPinkToilet: true,
+    isFree: true,
+    isOpen24x7: true,
+    isWheelchairAccessible: true,
+    facilities: ['Sanitary Pad Dispenser', 'Baby Feeding Zone', 'Air Conditioned', 'Female Attendant'],
+    lat: 22.723,
+    lng: 75.882,
+  },
+  {
+    id: 'pt_2',
+    name: '56 Dukan Deluxe Public Toilet (5-Star Swachh)',
+    nameHi: '56 दुकान डीलक्स सार्वजनिक शौचालय',
+    address: 'Chhappan Dukan Food Street, New Palasia',
+    distance: '420m',
+    rating: 4.8,
+    reviewCount: 812,
+    isPinkToilet: false,
+    isFree: false,
+    isOpen24x7: true,
+    isWheelchairAccessible: true,
+    facilities: ['Touchless Sensors', 'Music & Fragrance', 'Shower Cube', 'UPI Tap to Pay (₹5)'],
+    lat: 22.725,
+    lng: 75.885,
+  },
+  {
+    id: 'pt_3',
+    name: 'Vijay Nagar Square Smart CT/PT',
+    nameHi: 'विजय नगर चौराहा स्मार्ट जन सुविधा केंद्र',
+    address: 'Behind BRTS Bus Station, Vijay Nagar',
+    distance: '650m',
+    rating: 4.7,
+    reviewCount: 520,
+    isPinkToilet: false,
+    isFree: true,
+    isOpen24x7: true,
+    isWheelchairAccessible: true,
+    facilities: ['Drinking Water RO', 'Clean Restroom', 'Wheelchair Ramp', 'Soap Dispenser'],
+    lat: 22.753,
+    lng: 75.893,
+  },
+  {
+    id: 'pt_4',
+    name: 'Rajwada Heritage She-Lounge',
+    nameHi: 'राजवाड़ा हेरिटेज शी-लाउंज',
+    address: 'Opposite Rajwada Palace Gate #2',
+    distance: '1.2 km',
+    rating: 4.9,
+    reviewCount: 940,
+    isPinkToilet: true,
+    isFree: true,
+    isOpen24x7: false,
+    isWheelchairAccessible: true,
+    facilities: ['Sanitary Napkin Incinerator', 'Lounge Seating', 'CCTV Outside', 'Clean Drinking Water'],
+    lat: 22.719,
+    lng: 75.857,
+  },
+];

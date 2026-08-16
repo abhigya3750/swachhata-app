@@ -69,6 +69,7 @@ const EvidenceLocationScreen: React.FC = () => {
           ? 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=400&q=80'
           : undefined,
         note: textNote || (voiceRecorded ? 'Audio note attached' : undefined),
+        rewardPointsEarned: selectedComplaintCategory?.rewardPoints,
       };
 
       addTicket(newTicket);

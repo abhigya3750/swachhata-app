@@ -36,6 +36,9 @@ import ProfileHomeScreen from './components/screens/profile/ProfileHomeScreen';
 import SavedAddressesScreen from './components/screens/profile/SavedAddressesScreen';
 import HelpdeskScreen from './components/screens/profile/HelpdeskScreen';
 
+import PublicToiletLocatorScreen from './components/screens/toilets/PublicToiletLocatorScreen';
+import CommercialWasteScreen from './components/screens/commercial/CommercialWasteScreen';
+
 const RouterContent: React.FC = () => {
   const { currentScreen } = useAppState();
 
@@ -50,13 +53,17 @@ const RouterContent: React.FC = () => {
     case 'property_link':
       return <PropertyLinkScreen />;
 
-    // Home
+    // Home & Civic Facilities
     case 'home':
       return <HomeScreen />;
     case 'full_map':
       return <FullMapScreen />;
+    case 'toilet_locator':
+      return <PublicToiletLocatorScreen />;
+    case 'commercial_waste':
+      return <CommercialWasteScreen />;
 
-    // Raise Query
+    // Raise Query & Spot-a-Dump
     case 'category_select':
       return <CategorySelectScreen />;
     case 'evidence_location':

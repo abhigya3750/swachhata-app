@@ -2,10 +2,10 @@ import React from 'react';
 import { useAppState } from '../../../context/AppStateContext';
 import { Button } from '../../common/Button';
 import { Badge } from '../../common/Badge';
-import { CheckCircle2, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { CheckCircle2, Clock, MapPin, ArrowRight, Gift } from 'lucide-react';
 
 const ComplaintConfirmScreen: React.FC = () => {
-  const { language, navigateTo, screenParams } = useAppState();
+  const { language, navigateTo, screenParams, ecoPoints } = useAppState();
   const ticket = screenParams?.ticket || {
     ticketId: '#IMC-ORD-8832',
     categoryTitle: 'Garbage Truck Missed',
@@ -14,32 +14,62 @@ const ComplaintConfirmScreen: React.FC = () => {
     address: 'Scheme 54, Vijay Nagar, Indore',
     createdAt: 'Just now',
     slaHours: 48,
+    rewardPointsEarned: 50,
   };
 
+  const isRewarded = Boolean(ticket.rewardPointsEarned);
+
   return (
-    <div className="flex-1 bg-slate-50 p-5 flex flex-col justify-between items-center text-center">
-      <div className="w-full space-y-4 pt-4">
-        <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+    <div className="flex-1 bg-slate-50 p-5 flex flex-col justify-between items-center text-center font-sans">
+      <div className="w-full space-y-4 pt-2">
+        <div className="relative w-16 h-16 mx-auto flex items-center justify-center">
           <div className="absolute inset-0 rounded-full bg-emerald-100 animate-ping opacity-75"></div>
-          <div className="relative w-20 h-20 rounded-full bg-eco-green text-white flex items-center justify-center shadow-xl border-4 border-white">
-            <CheckCircle2 className="w-10 h-10 stroke-[2.5]" />
+          <div className="relative w-16 h-16 rounded-full bg-eco-green text-white flex items-center justify-center shadow-xl border-4 border-white">
+            <CheckCircle2 className="w-9 h-9 stroke-[2.5]" />
           </div>
         </div>
 
         <div>
-          <Badge variant="success" className="mb-2">
+          <Badge variant="success" className="mb-1.5">
             {language === 'hi' ? 'शिकायत सफलता पूर्वक दर्ज हुई' : 'Complaint Successfully Registered'}
           </Badge>
 
           <h2 className="text-2xl font-black text-slate-900 tracking-tight font-mono">
             {ticket.ticketId}
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 mt-0.5">
             {language === 'hi'
-              ? 'आपकी शिकायत संबंधित वार्ड सुपरवाइजर को भेज दी गई है'
-              : 'Your complaint has been logged and dispatched to Ward 34 Inspector'}
+              ? 'आपकी शिकायत संबंधित वार्ड 34 सुपरवाइजर को भेज दी गई है'
+              : 'Your ticket has been logged & dispatched to Ward 34 Inspector'}
           </p>
         </div>
+
+        {/* Spot-a-Dump Reward Banner if points earned */}
+        {isRewarded && (
+          <div className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3.5 shadow-md text-left flex items-center justify-between border-2 border-yellow-200 animate-in zoom-in-95">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center shrink-0">
+                <Gift className="w-6 h-6 text-yellow-200 animate-bounce" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-black uppercase tracking-wider">
+                    🎉 +50 Eco-Points Credited!
+                  </span>
+                </div>
+                <p className="text-[11px] text-amber-100 mt-0.5">
+                  Your new balance: <strong>{ecoPoints} PTS</strong> (Usable for Eco-Store SHG purchases)
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => navigateTo('ecostore_grid')}
+              className="text-[10px] bg-white text-amber-900 font-bold px-2 py-1 rounded-lg shrink-0 shadow-xs"
+            >
+              Shop →
+            </button>
+          </div>
+        )}
 
         <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm text-left space-y-3">
           <div className="flex justify-between items-center pb-2 border-b border-slate-100 text-xs">
@@ -57,7 +87,7 @@ const ComplaintConfirmScreen: React.FC = () => {
             </span>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-1">
             <div className="flex items-center justify-between text-xs mb-2">
               <span className="font-bold text-slate-800 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5 text-municipal-blue" />
