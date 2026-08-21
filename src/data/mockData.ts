@@ -102,7 +102,7 @@ export const SUB_CATEGORIES: Category[] = [
 
 export const MOCK_PROPERTY_TAX: PropertyTax = {
   taxId: 'IMC-TAX-9921',
-  ownerName: 'Abhigya Kanungo',
+  ownerName: 'Abhigya Sharma',
   address: 'Plot 142, Scheme 54, Vijay Nagar, Indore',
   ward: 'Vijay Nagar (Ward 34)',
   amountDue: 150,
@@ -144,7 +144,7 @@ export const PICKUP_FLEET_OPTIONS: WastePickupOption[] = [
   {
     id: 'fleet_small',
     name: 'Small Pickup (Bike Carrier)',
-    nameHi: 'छोटा पिकअप (बायल carrier)',
+    nameHi: 'छोटा पिकअप (बायकल)',
     weightCapacity: 'Up to 5 kg',
     priceRange: '₹50 - ₹80',
     priceMin: 50,
@@ -163,11 +163,11 @@ export const PICKUP_FLEET_OPTIONS: WastePickupOption[] = [
     priceMax: 120,
     eta: '10 mins',
     iconType: 'auto',
-    recommendedFor: 'Garden green waste, tree leaves, furniture scrap',
+    recommendedFor: 'Garden waste, furniture scrap, household clear-out',
   },
   {
     id: 'fleet_large',
-    name: 'Bulk Pickup (4-Wheeler Heavy Truck)',
+    name: 'Bulk Pickup (4-Wheeler Truck)',
     nameHi: 'बल्क पिकअप (4-व्हीलर ट्रक)',
     weightCapacity: '25 kg+ / Heavy Debris',
     priceRange: '₹160 - ₹180',
@@ -175,7 +175,7 @@ export const PICKUP_FLEET_OPTIONS: WastePickupOption[] = [
     priceMax: 180,
     eta: '20 mins',
     iconType: 'truck',
-    recommendedFor: 'Construction debris, heavy green branches, major scrap',
+    recommendedFor: 'Construction debris, major renovation waste',
   },
 ];
 
@@ -184,7 +184,7 @@ export const ECO_PRODUCTS: EcoProduct[] = [
     id: 'prod_1',
     title: 'Indore Organic Compost (5kg)',
     titleHi: 'इंदौर जैविक खाद (5 किग्रा)',
-    shgGroup: 'Akshata Women Self Help Group',
+    shgGroup: 'Annapurna Women Self Help Group',
     price: 180,
     rating: 4.9,
     imageUrl: 'https://images.unsplash.com/photo-1585314062340-f1a5a7c9328d?auto=format&fit=crop&w=400&q=80',
@@ -197,7 +197,7 @@ export const ECO_PRODUCTS: EcoProduct[] = [
     id: 'prod_2',
     title: 'Pavitra Sacred Agarbatti (Pack of 3)',
     titleHi: 'पवित्र सुगंधित अगरबत्ती (3 का पैक)',
-    shgGroup: 'Srushti Sacred Waste Artisans',
+    shgGroup: 'Mahakali Sacred Waste Artisans',
     price: 120,
     rating: 4.8,
     imageUrl: 'https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=400&q=80',
@@ -210,7 +210,7 @@ export const ECO_PRODUCTS: EcoProduct[] = [
     id: 'prod_3',
     title: 'Recycled Cloth Shopping Bag',
     titleHi: 'पुनर्चक्रित कपड़ा थैला',
-    shgGroup: 'Richa Civic Udyog, Ward 22',
+    shgGroup: 'Swachh Nari Udyog, Ward 22',
     price: 75,
     rating: 4.7,
     imageUrl: 'https://images.unsplash.com/photo-1597484661643-2f5fef640dd1?auto=format&fit=crop&w=400&q=80',
@@ -245,14 +245,14 @@ export const INITIAL_SAVED_ADDRESSES: SavedAddress[] = [
   },
   {
     id: 'addr_2',
-    label: 'Office',
+    label: 'Rishi Office',
     labelHi: 'कार्यालय',
     addressLine: '5th Floor, Corporate Park, MG Road',
     ward: 'Palasia (Ward 22)',
   },
   {
     id: 'addr_3',
-    label: 'Shop',
+    label: 'Kamal Shop',
     labelHi: 'दुकान',
     addressLine: 'Shop 18, Main Market Square',
     ward: 'Rajwada (Ward 12)',
@@ -260,10 +260,9 @@ export const INITIAL_SAVED_ADDRESSES: SavedAddress[] = [
 ];
 
 export const MOCK_DRIVER_DATA = {
-  driverName: 'Rishi',
+  driverName: 'Kamal Singh',
   driverPhone: '+91 98260 12345',
   driverPhoto: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-  secondaryDriverName: 'Kamal',
   vehicleNumber: 'MP-09-CZ-8832',
   vehicleModel: 'Indore Swachhata Tipper Van #42',
   rating: 4.9,

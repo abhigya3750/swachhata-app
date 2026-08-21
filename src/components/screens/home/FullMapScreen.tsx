@@ -25,7 +25,7 @@ const FullMapScreen: React.FC = () => {
       </div>
 
       <div className="flex-1 relative">
-        <MockMap heightClass="h-full" showDriver={true} showRadar={true} driverEta="3 mins" />
+        <MockMap heightClass="h-full" showDriver={true} showRadar={true} driverEta="3 mins" wardId={selectedWard.id} />
       </div>
 
       <div className="bg-white text-slate-800 rounded-t-3xl p-4 shadow-2xl border-t border-slate-200 z-30 space-y-3">

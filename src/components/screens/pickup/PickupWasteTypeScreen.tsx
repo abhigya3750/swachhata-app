@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppState } from '../../../context/AppStateContext';
 import { Button } from '../../common/Button';
 import { ArrowLeft, Check } from 'lucide-react';
@@ -6,99 +6,97 @@ import { ArrowLeft, Check } from 'lucide-react';
 const PickupWasteTypeScreen: React.FC = () => {
   const { language, navigateTo, goBack, pickupDraft, setPickupDraft } = useAppState();
 
-  const [wasteType, setWasteType] = useState<string>(pickupDraft?.wasteType || 'Wet Waste');
+  const [wasteType, setWasteType] = useState<string>(pickupDraft?.wasteType || 'Dry Waste');
   const [quantityTier, setQuantityTier] = useState<string>(
     pickupDraft?.quantityTier || 'Medium (up to 25kg)'
   );
 
   const wasteTypes = [
+    { id: 'Dry Waste', labelEn: 'Dry Waste / Packaging', labelHi: 'सूखा कचरा / पैकेजिंग', icon: '📦' },
     { id: 'Wet Waste', labelEn: 'Horticulture / Green Waste', labelHi: 'बगीचे का कचरा / पेड़ पत्तियाँ', icon: '🍃' },
-    { id: 'Dry Waste', labelEn: 'Dry Recyclable Scrap', labelHi: 'सूखा कचरा / पैकेजिंग', icon: '📦' },
-    { id: 'Mixed Waste', labelEn: 'C&D Debris / Construction', labelHi: 'निर्माण मलबा / रिपेयर कचरा', icon: '🧱' },
+    { id: 'Mixed Waste', labelEn: 'C&D Debris / Renovation Waste', labelHi: 'निर्माण मलबा / रिपेयर कचरा', icon: '🧱' },
   ];
 
-  // Dynamic quantity tiers based on selected waste type
-  const getQuantityTiers = (category: string) => {
-    if (category === 'Wet Waste') {
-      return [
-        {
-          id: 'Small (up to 5kg)',
-          labelEn: 'Small Green Waste (Up to 5 kg)',
-          labelHi: 'छोटा बगीचा कचरा (5 किग्रा तक)',
-          descEn: '1-2 sacks of garden leaves, small flower/plant prunings',
-          descHi: '1-2 बोरा पत्तियों एवं छोटे पेड़-पौधों की छँटाई'
-        },
-        {
-          id: 'Medium (up to 25kg)',
-          labelEn: 'Medium Green Waste (Up to 25 kg)',
-          labelHi: 'मध्यम बगीचा कचरा (25 किग्रा तक)',
-          descEn: 'Cut tree branches, hedge trimmings & lawn grass',
-          descHi: 'पेड़ की टहनियाँ, झाड़ियाँ एवं घास की छँटाई'
-        },
-        {
-          id: 'Large (25kg+)',
-          labelEn: 'Heavy Green Waste (25 kg+)',
-          labelHi: 'भारी बगीचा कचरा (25 किग्रा+)',
-          descEn: 'Heavy tree trunks, major garden overhaul & dense logs',
-          descHi: 'मोटे तने, भारी शाखाएँ एवं बड़े बगीचे की सफाई'
-        },
-      ];
-    } else if (category === 'Dry Waste') {
-      return [
-        {
-          id: 'Small (up to 5kg)',
-          labelEn: 'Small Scrap (Up to 5 kg)',
-          labelHi: 'छोटा स्क्रैप (5 किग्रा तक)',
-          descEn: 'Single cardboard box, old plastic containers',
-          descHi: 'एक डिब्बा या छोटे प्लास्टिक बर्तन'
-        },
-        {
-          id: 'Medium (up to 25kg)',
-          labelEn: 'Medium Scrap (Up to 25 kg)',
-          labelHi: 'मध्यम स्क्रैप (25 किग्रा तक)',
-          descEn: 'Paper cartons, metal cans & plastic scrap bundles',
-          descHi: 'कागज गत्ते, धातु के डिब्बे एवं प्लास्टिक स्क्रैप'
-        },
-        {
-          id: 'Large (25kg+)',
-          labelEn: 'Bulk Scrap (25 kg+)',
-          labelHi: 'बल्क स्क्रैप (25 किग्रा+)',
-          descEn: 'Major household clear-out, commercial packaging',
-          descHi: 'घर का पुराना कबाड़ एवं भारी पैकिंग'
-        },
-      ];
-    } else {
-      return [
-        {
-          id: 'Small (up to 5kg)',
-          labelEn: 'Small Masonry (Up to 5 kg)',
-          labelHi: 'छोटा मलबा (5 किग्रा तक)',
-          descEn: 'Broken tiles, single cement sack scrap',
-          descHi: 'टूटी हुई टाइल्स या सीमेंट का छोटा टुकड़ा'
-        },
-        {
-          id: 'Medium (up to 25kg)',
-          labelEn: 'Medium Debris (Up to 25 kg)',
-          labelHi: 'मध्यम मलबा (25 किग्रा तक)',
-          descEn: 'Bathroom repair concrete debris, plaster rubble',
-          descHi: 'बाथरूम रिपेयर का कंक्रीट मलबा'
-        },
-        {
-          id: 'Large (25kg+)',
-          labelEn: 'Heavy Construction Debris (25 kg+)',
-          labelHi: 'भारी निर्माण मलबा (25 किग्रा+)',
-          descEn: 'Full room renovation rubble, heavy brick/concrete',
-          descHi: 'मकान मरम्मत का भारी ईंट-पत्थर मलबा'
-        },
-      ];
-    }
+  // Quantity tiers that change based on selected waste type
+  const quantityTiersByType: Record<string, { id: string; labelEn: string; labelHi: string; descEn: string; descHi: string }[]> = {
+    'Dry Waste': [
+      {
+        id: 'Small (up to 5kg)',
+        labelEn: 'Small (Up to 5 kg)',
+        labelHi: 'छोटा (5 किग्रा तक)',
+        descEn: 'Single box, old electronics, few plastic bags',
+        descHi: 'एक डिब्बा, पुराने इलेक्ट्रॉनिक्स, कुछ प्लास्टिक',
+      },
+      {
+        id: 'Medium (up to 25kg)',
+        labelEn: 'Medium (Up to 25 kg)',
+        labelHi: 'मध्यम (25 किग्रा तक)',
+        descEn: 'Old furniture scrap, large carton boxes, bulk packaging',
+        descHi: 'पुराना फर्नीचर, बड़े कार्टन, बल्क पैकेजिंग',
+      },
+      {
+        id: 'Large (25kg+)',
+        labelEn: 'Large / Heavy Scrap (25kg+)',
+        labelHi: 'बड़ा / भारी स्क्रैप (25 किग्रा+)',
+        descEn: 'Full house clearout, warehouse e-waste, major scrap',
+        descHi: 'पूरे घर का कचरा, गोदाम ई-कचरा, बड़ा स्क्रैप',
+      },
+    ],
+    'Wet Waste': [
+      {
+        id: 'Small Bundle (up to 20kg)',
+        labelEn: 'Small Bundle (Up to 20 kg)',
+        labelHi: 'छोटा गट्ठर (20 किग्रा तक)',
+        descEn: 'Single tree pruning, small garden trimmings',
+        descHi: 'एक पेड़ की छँटाई, छोटे बगीचे की कतरन',
+      },
+      {
+        id: 'Medium Load (20–50kg)',
+        labelEn: 'Medium Load (20–50 kg)',
+        labelHi: 'मध्यम लोड (20–50 किग्रा)',
+        descEn: 'Multiple trees, seasonal garden cleanup, leaves',
+        descHi: 'कई पेड़, मौसमी बगीचा सफाई, पत्तियाँ',
+      },
+      {
+        id: 'Heavy Load (50kg+)',
+        labelEn: 'Heavy Green Load (50kg+)',
+        labelHi: 'भारी हरा कचरा (50 किग्रा+)',
+        descEn: 'Full garden clearance, large fallen trees, bulk green waste',
+        descHi: 'पूरे बगीचे की सफाई, बड़े गिरे पेड़, भारी हरा कचरा',
+      },
+    ],
+    'Mixed Waste': [
+      {
+        id: 'Minor Debris (up to 100kg)',
+        labelEn: 'Minor Debris (Up to 100 kg)',
+        labelHi: 'मामूली मलबा (100 किग्रा तक)',
+        descEn: 'Small repair, tile breaking, single room renovation',
+        descHi: 'छोटी मरम्मत, टाइल तोड़ना, एक कमरे की मरम्मत',
+      },
+      {
+        id: 'Major Renovation (100–500kg)',
+        labelEn: 'Major Renovation (100–500 kg)',
+        labelHi: 'बड़ी मरम्मत (100–500 किग्रा)',
+        descEn: 'Full floor renovation, multiple rooms, structural repair',
+        descHi: 'पूरी फर्श नवीनीकरण, कई कमरे, संरचनात्मक मरम्मत',
+      },
+      {
+        id: 'Construction Debris (500kg+)',
+        labelEn: 'Construction Debris (500kg+)',
+        labelHi: 'निर्माण मलबा (500 किग्रा+)',
+        descEn: 'Full demolition, new construction clearout, bulk concrete',
+        descHi: 'पूर्ण विध्वंस, नया निर्माण, थोक कंक्रीट',
+      },
+    ],
   };
 
-  const currentQuantityTiers = getQuantityTiers(wasteType);
+  // Reset quantity tier to first option of new type when waste type changes
+  useEffect(() => {
+    const tiers = quantityTiersByType[wasteType] || quantityTiersByType['Dry Waste'];
+    setQuantityTier(tiers[0].id);
+  }, [wasteType]);
 
-  const handleSelectWasteType = (typeId: string) => {
-    setWasteType(typeId);
-  };
+  const currentTiers = quantityTiersByType[wasteType] || quantityTiersByType['Dry Waste'];
 
   const handleProceed = () => {
     setPickupDraft({
@@ -110,7 +108,7 @@ const PickupWasteTypeScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between font-sans">
+    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between">
       <div>
         <button
           onClick={goBack}
@@ -121,12 +119,12 @@ const PickupWasteTypeScreen: React.FC = () => {
         </button>
 
         <h2 className="text-xl font-bold text-slate-900">
-          {language === 'hi' ? 'बल्क कचरा प्रकार और वजन' : 'Bulk Pickup Category & Weight'}
+          {language === 'hi' ? 'बल्क कचरा प्रकार और मात्रा' : 'Waste Type & Quantity Tier'}
         </h2>
         <p className="text-xs text-slate-500 mt-1">
           {language === 'hi'
-            ? 'अपनी पसंद के अनुसार कचरा श्रेणी और वजन चुनें'
-            : 'Select category & approximate weight tier to match suitable tipper vehicle'}
+            ? 'सही वाहन और शुल्क निर्धारण के लिए कचरे का विवरण चुनें'
+            : 'Select waste material & weight tier — options update automatically based on type'}
         </p>
 
         {/* 1. Waste Category Selector */}
@@ -140,10 +138,10 @@ const PickupWasteTypeScreen: React.FC = () => {
               return (
                 <div
                   key={t.id}
-                  onClick={() => handleSelectWasteType(t.id)}
+                  onClick={() => setWasteType(t.id)}
                   className={`p-3 rounded-2xl border text-center cursor-pointer transition flex flex-col items-center justify-center gap-1 ${
                     isSelected
-                      ? 'bg-emerald-50 border-eco-green text-eco-darkGreen font-bold shadow-sm ring-1 ring-eco-green'
+                      ? 'bg-emerald-50 border-eco-green text-eco-darkGreen font-bold shadow-sm'
                       : 'bg-white border-slate-200 hover:bg-slate-100 text-slate-700'
                   }`}
                 >
@@ -157,18 +155,14 @@ const PickupWasteTypeScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Sequential Quantity Tiers (Dynamic by Waste Type) */}
+        {/* 2. Dynamic Quantity Tiers — auto-updates when waste type changes */}
         <div className="mt-5 space-y-2.5">
-          <div className="flex items-center justify-between">
-            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-              {language === 'hi' ? '2. वजन श्रेणी (Quantity Tier)' : '2. Estimated Weight Tier'}
-            </label>
-            <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded-full">
-              {wasteType}
-            </span>
-          </div>
+          <label className="text-xs font-bold text-slate-700 block uppercase tracking-wider">
+            {language === 'hi' ? '2. वजन श्रेणी (Quantity Tier)' : '2. Estimated Quantity Tier'}
+            <span className="ml-1.5 text-[10px] text-emerald-600 font-semibold normal-case">• auto-matches {wasteType}</span>
+          </label>
 
-          {currentQuantityTiers.map((tier) => {
+          {currentTiers.map((tier) => {
             const isSelected = quantityTier === tier.id;
             return (
               <div
@@ -176,11 +170,11 @@ const PickupWasteTypeScreen: React.FC = () => {
                 onClick={() => setQuantityTier(tier.id)}
                 className={`p-3.5 rounded-2xl border cursor-pointer transition flex items-center justify-between ${
                   isSelected
-                    ? 'bg-emerald-50 border-eco-green shadow-sm ring-1 ring-eco-green'
+                    ? 'bg-emerald-50 border-eco-green shadow-sm'
                     : 'bg-white border-slate-200 hover:bg-slate-100'
                 }`}
               >
-                <div className="pr-2">
+                <div>
                   <div className="text-xs font-bold text-slate-900">
                     {language === 'hi' ? tier.labelHi : tier.labelEn}
                   </div>
@@ -190,7 +184,7 @@ const PickupWasteTypeScreen: React.FC = () => {
                 </div>
 
                 <div
-                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ml-2 ${
                     isSelected ? 'border-eco-green bg-eco-green text-white' : 'border-slate-300'
                   }`}
                 >

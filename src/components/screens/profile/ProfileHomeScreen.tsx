@@ -35,11 +35,11 @@ const ProfileHomeScreen: React.FC = () => {
       <div className="bg-gradient-to-r from-municipal-blue to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md space-y-3">
         <div className="flex items-center gap-3.5">
           <div className="w-14 h-14 rounded-full bg-white/20 border-2 border-white/40 flex items-center justify-center text-white font-bold text-xl shadow-inner shrink-0">
-            AK
+            AS
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold">Abhigya Kanungo</h2>
+              <h2 className="text-base font-bold">Abhigya Sharma</h2>
               <span className="bg-emerald-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
                 VERIFIED
               </span>

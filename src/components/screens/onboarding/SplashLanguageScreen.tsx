@@ -18,7 +18,7 @@ const SplashLanguageScreen: React.FC = () => {
   }, [stage]);
 
   return (
-    <div className="flex-1 bg-gradient-to-b from-municipal-blue via-municipal-darkBlue to-slate-950 text-white p-5 flex flex-col justify-between items-center text-center relative overflow-hidden select-none font-sans">
+    <div className="flex-1 bg-gradient-to-b from-municipal-blue via-municipal-darkBlue to-slate-950 text-white p-5 flex flex-col justify-between items-center text-center relative overflow-hidden select-none">
       
       {/* Background Subtle Pulsing Glow Effect */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
@@ -55,7 +55,7 @@ const SplashLanguageScreen: React.FC = () => {
               <p className="text-xs font-bold text-emerald-300 tracking-wide">
                 Powered by NERDS
               </p>
-              <p className="text-[10px] text-blue-200/90 leading-relaxed font-medium">
+              <p className="text-[10px] text-blue-200/80 leading-relaxed font-medium">
                 Waste Innovation for Sustainable Environment
               </p>
             </div>
@@ -64,7 +64,7 @@ const SplashLanguageScreen: React.FC = () => {
           {/* Bottom Accreditation */}
           <div className="space-y-1 pt-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-[10px] font-semibold border border-white/15">
-              <img src="/imc_logo.png" alt="IMC Logo" className="w-4 h-4 object-contain rounded-full bg-white/20 p-0.5" />
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span>Indore Municipal Corporation (IMC)</span>
             </div>
             <p className="text-[9px] text-white/40">
@@ -73,17 +73,13 @@ const SplashLanguageScreen: React.FC = () => {
           </div>
         </div>
       ) : (
-        /* STAGE 2: Language Choose Button Page (IMC Emblem Header) */
+        /* STAGE 2: Language Choose Button Page */
         <div className="flex-1 w-full flex flex-col justify-between items-center py-3 animate-in fade-in duration-500">
           
-          {/* Top Header: IMC ONLY Emblem */}
+          {/* Top Header: IMC ONLY (As requested: "only mention imc at the top dont wise X imc") */}
           <div className="w-full pt-2 flex flex-col items-center">
-            <div className="w-16 h-16 rounded-2xl bg-white p-1 shadow-xl border-2 border-white/40 mb-2 flex items-center justify-center">
-              <img
-                src="/imc_logo.png"
-                alt="Indore Municipal Corporation Emblem"
-                className="w-full h-full object-contain"
-              />
+            <div className="w-20 h-20 rounded-2xl bg-white flex items-center justify-center shadow-xl border-2 border-white/40 mb-2 p-1">
+              <img src="/imc_logo.png" alt="IMC Logo" className="w-full h-full object-contain" />
             </div>
 
             <h1 className="text-lg font-bold text-white tracking-tight">
@@ -149,7 +145,7 @@ const SplashLanguageScreen: React.FC = () => {
 
             <div className="text-[10px] text-white/60 space-y-0.5">
               <p className="font-semibold text-emerald-300">
-                Project WISE • Waste Innovation for Sustainable Environment
+                Project WISE • Powered by NERDS
               </p>
               <p className="text-[9px] text-white/40 flex items-center justify-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-emerald-400" />

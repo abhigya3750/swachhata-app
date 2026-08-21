@@ -181,7 +181,7 @@ const PickupTrackingScreen: React.FC = () => {
         {/* Interactive Safai Mitra Field App Simulation Trigger */}
         {driverStage === 'arrived' && (
           <div className="p-2.5 bg-blue-50 border border-blue-200 rounded-xl flex items-center justify-between text-xs text-blue-900">
-            <span>Simulate Driver {MOCK_DRIVER_DATA.driverName} verifying OTP:</span>
+            <span>Simulate Driver Ramesh Sharma verifying OTP:</span>
             <button
               onClick={() => {
                 setShowOtpSimModal(true);
@@ -219,7 +219,7 @@ const PickupTrackingScreen: React.FC = () => {
               </div>
               <h4 className="font-bold text-sm text-slate-900">Safai Mitra Field App</h4>
               <p className="text-[10px] text-slate-500">
-                Driver {MOCK_DRIVER_DATA.driverName} entering citizen OTP for pickup confirmation
+                Driver Ramesh Sharma entering citizen OTP for pickup confirmation
               </p>
             </div>
 

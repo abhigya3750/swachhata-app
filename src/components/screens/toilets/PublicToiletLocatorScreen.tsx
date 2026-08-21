@@ -200,6 +200,16 @@ const PublicToiletLocatorScreen: React.FC = () => {
                 ))}
               </div>
 
+              {/* Recent citizen reviewers */}
+              <div className="flex items-center gap-1 mt-2 text-[9px] text-slate-500">
+                <span className="font-semibold">Reviewed by:</span>
+                {(['Richa', 'Akshata', 'Srushti'] as const).slice(0, 2 + (toilet.reviewCount % 2)).map((name, i) => (
+                  <span key={i} className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded-full border border-slate-200 font-medium">{name}</span>
+                ))}
+                <span className="text-slate-400">+{toilet.reviewCount} others</span>
+              </div>
+
+
               {/* Action Buttons Strip */}
               <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -280,7 +290,7 @@ const PublicToiletLocatorScreen: React.FC = () => {
               <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-7 h-7" />
               </div>
-              <h4 className="font-bold text-sm text-slate-900">Thank You, Citizen!</h4>
+              <h4 className="font-bold text-sm text-slate-900">Thank You, Abhigya!</h4>
               <p className="text-slate-500 text-[11px]">
                 Your live hygiene rating has been transmitted to Indore Municipal Corporation sanitation monitors.
               </p>

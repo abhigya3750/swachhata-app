@@ -15,7 +15,6 @@ import {
   Award,
   ShieldCheck,
   Building,
-  Sparkles
 } from 'lucide-react';
 
 const HomeScreen: React.FC = () => {
@@ -27,25 +26,14 @@ const HomeScreen: React.FC = () => {
     vanStatus,
     propertyTax,
     ecoPoints,
-    setSelectedComplaintCategory,
   } = useAppState();
 
   const [showCleanCitySealModal, setShowCleanCitySealModal] = useState<boolean>(false);
 
-  const handleSpotDumpClick = () => {
-    setSelectedComplaintCategory({
-      id: 'spot_a_dump',
-      title: 'Community Spot-a-Dump (+50 PTS)',
-      titleHi: 'स्पॉट-ए-डंप (इनाम +50 PTS)',
-      rewardPoints: 50,
-    });
-    navigateTo('evidence_location');
-  };
-
   return (
     <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 font-sans">
       
-      {/* 1. Clean Municipal Blue Header with Official IMC Emblem & 8x National Seal */}
+      {/* 1. Clean Municipal Blue Header with 8x National Cleanest City Seal */}
       <div className="bg-gradient-to-r from-municipal-blue via-blue-600 to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md relative overflow-hidden">
         {/* Subtle background decorative emblem */}
         <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
@@ -53,20 +41,16 @@ const HomeScreen: React.FC = () => {
         <div className="flex items-center justify-between gap-3">
           <div className="space-y-0.5">
             <div className="flex items-center gap-1.5 text-blue-100 text-xs font-semibold">
-              <img src="/imc_logo.png" alt="IMC Logo" className="w-5 h-5 object-contain rounded-full bg-white/20 p-0.5" />
               <span>{language === 'hi' ? 'इंदौर नगर निगम' : 'Indore Municipal Corporation'}</span>
               <span>•</span>
               <span className="text-emerald-300 font-bold">{selectedWard.name}</span>
             </div>
             <h2 className="text-lg font-bold text-white tracking-tight">
-              {language === 'hi' ? 'नमस्ते, अभिज्ञ 👋' : 'Namaste, Abhigya 👋'}
+              {language === 'hi' ? 'नमस्ते, अभिग्या 👋' : 'Namaste, Abhigya 👋'}
             </h2>
-            <p className="text-[10px] text-blue-200/90 font-medium">
-              Project WISE (Waste Innovation for Sustainable Environment)
-            </p>
           </div>
 
-          {/* Prestigious 8x Clean City Achievement Seal */}
+          {/* Prestigious 8x Clean City Achievement Seal (Clickable for details) */}
           <button
             onClick={() => setShowCleanCitySealModal(true)}
             className="group relative flex flex-col items-center bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 text-slate-950 px-3 py-1.5 rounded-2xl shadow-lg border border-amber-200 hover:scale-105 active:scale-95 transition-transform shrink-0"
@@ -113,7 +97,7 @@ const HomeScreen: React.FC = () => {
           </button>
         </div>
 
-        {/* Proximity Banner */}
+        {/* Clean Proximity Banner */}
         {vanStatus === 'nearby' && (
           <div className="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-3 shadow-sm flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -169,45 +153,29 @@ const HomeScreen: React.FC = () => {
           heightClass="h-36"
           showDriver={vanStatus === 'nearby' || vanStatus === 'away'}
           driverEta={vanStatus === 'nearby' ? '3 mins' : '15 mins'}
+          wardId={selectedWard.id}
         />
       </section>
 
-      {/* 3. Quick Utilities Bar: Public Toilet Locator & Community Spot-a-Dump (+50 PTS) */}
-      <section className="grid grid-cols-2 gap-3">
+      {/* 3. Quick Civic Utilities Bar (Toilet Locator only) */}
+      <section>
         <div
           onClick={() => navigateTo('toilet_locator')}
-          className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-start gap-2.5"
+          className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-center gap-3"
         >
           <div className="w-9 h-9 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
             <Building className="w-4 h-4" />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
-              <span className="truncate">{language === 'hi' ? 'सार्वजनिक शौचालय' : 'Public Restrooms'}</span>
-              <span className="bg-pink-100 text-pink-700 text-[8px] font-bold px-1 rounded shrink-0">Pink</span>
+            <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+              <span>{language === 'hi' ? 'सार्वजनिक शौचालय खोजें' : 'Find Public Toilets Near You'}</span>
+              <span className="bg-pink-100 text-pink-700 text-[8px] font-bold px-1.5 py-0.5 rounded shrink-0">She-Lounge</span>
             </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
-              {language === 'hi' ? '5-स्टार CT/PT व शी-लाउंज' : 'Find nearest clean restrooms'}
+            <p className="text-[10px] text-slate-500 mt-0.5">
+              {language === 'hi' ? '5-स्टार CT/PT व शी-लाउंज • मुफ्त • 24x7' : '5-Star CT/PT • Women-Exclusive Pink Toilets • Free Entry'}
             </p>
           </div>
-        </div>
-
-        <div
-          onClick={handleSpotDumpClick}
-          className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-2xl p-3.5 shadow-sm cursor-pointer hover:scale-[1.01] transition touch-active flex items-start gap-2.5"
-        >
-          <div className="w-9 h-9 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0">
-            <Sparkles className="w-4 h-4 text-yellow-200 animate-bounce" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold flex items-center gap-1">
-              <span className="truncate">{language === 'hi' ? 'स्पॉट-ए-डंप' : 'Spot-a-Dump'}</span>
-              <span className="bg-white text-amber-900 text-[8px] font-black px-1 rounded shrink-0">+50 PTS</span>
-            </div>
-            <p className="text-[10px] text-amber-100 mt-0.5 leading-tight line-clamp-2">
-              {language === 'hi' ? 'कचरे की फोटो भेजें और इनाम पाएं' : 'Report dumps & earn rewards'}
-            </p>
-          </div>
+          <ArrowRight className="w-4 h-4 text-slate-400 shrink-0" />
         </div>
       </section>
 
@@ -271,7 +239,7 @@ const HomeScreen: React.FC = () => {
             <p className="text-[11px] text-emerald-100 opacity-90 mt-0.5 line-clamp-1">
               {language === 'hi'
                 ? 'सूखा/मलबे/बगीचे का कचरा उठाने हेतु वाहन बुक करें'
-                : 'Book dedicated vehicle for garden green waste & debris'}
+                : 'Book dedicated vehicle for heavy debris & bulk scrap'}
             </p>
           </div>
         </div>
@@ -328,12 +296,14 @@ const HomeScreen: React.FC = () => {
       >
         <div className="space-y-4 p-2 text-slate-800 font-sans">
           <div className="bg-gradient-to-b from-amber-100 to-amber-50 p-4 rounded-2xl border border-amber-300 text-center space-y-2">
-            <img src="/imc_logo.png" alt="IMC Logo" className="w-12 h-12 object-contain mx-auto drop-shadow-sm mb-1" />
+            <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-500 text-amber-950 flex items-center justify-center mx-auto shadow-md">
+              <Award className="w-8 h-8 stroke-[2.2]" />
+            </div>
             <h3 className="text-base font-black text-amber-950">
               Swachh Survekshan 8x Consecutive National Champion
             </h3>
             <p className="text-xs text-amber-900 leading-relaxed font-medium">
-              Project WISE (Waste Innovation for Sustainable Environment) • Powered by Indore Municipal Corporation (IMC).
+              Ranked <strong>#1 Cleanest City in India for 8 Consecutive Years</strong> by the Ministry of Housing & Urban Affairs (MoHUA), Government of India.
             </p>
           </div>
 
