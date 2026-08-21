@@ -5,9 +5,9 @@ import { PICKUP_FLEET_OPTIONS } from '../../../data/mockData';
 import { ArrowLeft, Truck, Bike, Car, Check, Clock } from 'lucide-react';
 
 const PickupFleetScreen: React.FC = () => {
-  const { language, navigateTo, goBack, pickupDraft, setPickupDraft } = useAppState();
+  const { language, navigateTo, goBack, pickupForm, setPickupForm } = useAppState();
   const [selectedFleetId, setSelectedFleetId] = useState<string>(
-    pickupDraft?.selectedFleet?.id || 'fleet_medium'
+    pickupForm.fleetId || 'fleet_medium'
   );
 
   const getFleetIcon = (iconType: string) => {
@@ -24,16 +24,15 @@ const PickupFleetScreen: React.FC = () => {
   };
 
   const handleProceed = () => {
-    const chosenFleet = PICKUP_FLEET_OPTIONS.find((f) => f.id === selectedFleetId) || PICKUP_FLEET_OPTIONS[1];
-    setPickupDraft({
-      ...pickupDraft,
-      selectedFleet: chosenFleet,
-    });
+    setPickupForm((prev) => ({
+      ...prev,
+      fleetId: selectedFleetId,
+    }));
     navigateTo('pickup_location');
   };
 
   return (
-    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between">
+    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between font-sans">
       <div>
         <button
           onClick={goBack}
@@ -91,7 +90,7 @@ const PickupFleetScreen: React.FC = () => {
                 </div>
 
                 <div
-                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                  className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ${
                     isSelected ? 'border-eco-green bg-eco-green text-white' : 'border-slate-300'
                   }`}
                 >

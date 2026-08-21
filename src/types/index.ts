@@ -26,7 +26,6 @@ export type ScreenId =
   | 'profile_home'
   | 'saved_addresses'
   | 'helpdesk'
-  | 'commercial_waste'
   | 'toilet_locator';
 
 export type BottomTab = 'home' | 'raise_query' | 'chatbot' | 'ecostore' | 'profile';
@@ -41,6 +40,9 @@ export interface Ward {
   nameHi: string;
   zone: string;
   vanETA: string;
+  landmark?: string;
+  lat?: number;
+  lng?: number;
 }
 
 export interface Category {
@@ -55,7 +57,7 @@ export interface Category {
 }
 
 export interface ComplaintTicket {
-  ticketId: string; // e.g. #IMC-ORD-8832
+  ticketId: string;
   categoryId: string;
   categoryTitle: string;
   categoryTitleHi: string;
@@ -144,21 +146,11 @@ export interface PublicToilet {
   distance: string;
   rating: number;
   reviewCount: number;
-  isPinkToilet: boolean; // She-Lounge for women
+  isPinkToilet: boolean;
   isFree: boolean;
   isOpen24x7: boolean;
   isWheelchairAccessible: boolean;
   facilities: string[];
   lat: number;
   lng: number;
-}
-
-export interface CommercialWasteBooking {
-  businessName: string;
-  gstNumber: string;
-  tradeType: 'retail' | 'restaurant' | 'market' | 'wholesale';
-  wasteVolume: string;
-  pickupSlot: string;
-  monthlyFee: number;
-  complianceCertId: string;
 }

@@ -36,7 +36,6 @@ const ChatbotScreen: React.FC = () => {
   const intentChips = [
     { id: 'chip_spot_dump', labelEn: '📸 Spot-a-Dump (+50 PTS)', labelHi: '📸 स्पॉट-ए-डंप (+50 PTS)', icon: Gift },
     { id: 'chip_toilets', labelEn: '🚻 Find Public Toilet', labelHi: '🚻 शौचालय खोजें', icon: Building },
-    { id: 'chip_commercial', labelEn: '🏪 Commercial Waste', labelHi: '🏪 व्यावसायिक कचरा', icon: Store },
     { id: 'chip_pay_bill', labelEn: '💳 Pay Utility Bill', labelHi: '💳 बिल भुगतान', icon: CreditCard },
     { id: 'chip_track_van', labelEn: '🚚 Track Van #42', labelHi: '🚚 कचरा गाड़ी #42', icon: Truck },
     { id: 'chip_bulk_pickup', labelEn: '📦 Book Bulk Pickup', labelHi: '📦 बल्क पिकअप', icon: PackageCheck },

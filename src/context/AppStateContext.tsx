@@ -1,22 +1,21 @@
 import React, { createContext, useContext, useState } from 'react';
 import type {
+  Language,
   ScreenId,
   BottomTab,
-  Language,
   BillState,
   VanStatus,
   AddressState,
   Ward,
   PropertyTax,
   PaymentTransaction,
+  EcoProduct,
   SavedAddress,
   ComplaintTicket,
   ChatMessage,
-  EcoProduct,
-  WastePickupOption,
-  PublicToilet,
-  CommercialWasteBooking
+  PublicToilet
 } from '../types';
+
 import {
   MOCK_WARDS,
   MOCK_PROPERTY_TAX,
@@ -30,75 +29,64 @@ interface AppStateContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   currentScreen: ScreenId;
-  screenParams: any;
-  historyStack: ScreenId[];
   navigateTo: (screen: ScreenId, params?: any) => void;
   goBack: () => void;
+  screenParams: any;
+
   activeTab: BottomTab;
   setActiveTab: (tab: BottomTab) => void;
-  
-  // Ward & Account
+
   selectedWard: Ward;
   setSelectedWard: (ward: Ward) => void;
-  userPhone: string;
-  setUserPhone: (phone: string) => void;
-  isLoggedIn: boolean;
-  setIsLoggedIn: (status: boolean) => void;
-  
-  // State overrides (Demo Control Bar)
+
   billState: BillState;
   setBillState: (state: BillState) => void;
+
   vanStatus: VanStatus;
   setVanStatus: (status: VanStatus) => void;
+
   addressState: AddressState;
   setAddressState: (state: AddressState) => void;
-  
-  // Business Entities
+
   propertyTax: PropertyTax;
   setPropertyTax: React.Dispatch<React.SetStateAction<PropertyTax>>;
   transactions: PaymentTransaction[];
   addTransaction: (txn: PaymentTransaction) => void;
-  savedAddresses: SavedAddress[];
-  addSavedAddress: (addr: SavedAddress) => void;
-  tickets: ComplaintTicket[];
-  addTicket: (ticket: ComplaintTicket) => void;
+
   ecoPoints: number;
   setEcoPoints: React.Dispatch<React.SetStateAction<number>>;
-  
-  // Draft Booking State (Bulk Waste Pickup)
-  pickupDraft: {
-    wasteType?: string;
-    quantityTier?: string;
-    selectedFleet?: WastePickupOption;
-    locationAddress?: string;
-    lat?: number;
-    lng?: number;
-    finalPrice?: number;
-  };
-  setPickupDraft: React.Dispatch<React.SetStateAction<any>>;
+  awardCommunityPoints: (points: number) => void;
 
-  // Draft Eco Checkout State
-  selectedProduct?: EcoProduct;
-  setSelectedProduct: (prod?: EcoProduct) => void;
-  
-  // Chatbot State
+  savedAddresses: SavedAddress[];
+  addSavedAddress: (addr: SavedAddress) => void;
+
+  tickets: ComplaintTicket[];
+  addTicket: (ticket: ComplaintTicket) => void;
+
+  pickupForm: {
+    wasteType: string;
+    fleetId: string;
+    address: string;
+    quantityTier: string;
+  };
+  setPickupForm: React.Dispatch<React.SetStateAction<{
+    wasteType: string;
+    fleetId: string;
+    address: string;
+    quantityTier: string;
+  }>>;
+
+  selectedProduct: EcoProduct | undefined;
+  setSelectedProduct: (prod: EcoProduct | undefined) => void;
+
+  selectedComplaintCategory: any;
+  setSelectedComplaintCategory: (cat: any) => void;
+
+  publicToilets: PublicToilet[];
+
   messages: ChatMessage[];
   sendMessage: (text: string) => void;
   handleChipClick: (chipId: string) => void;
-
-  // Selected Category for Complaint Flow Handoff
-  selectedComplaintCategory?: any;
-  setSelectedComplaintCategory: (cat: any) => void;
-
-  // Public Toilet State
-  publicToilets: PublicToilet[];
-  
-  // Commercial Waste Booking State
-  commercialBooking: CommercialWasteBooking;
-  setCommercialBooking: React.Dispatch<React.SetStateAction<CommercialWasteBooking>>;
-
-  // Award Eco-Points on Community Dump Reporting
-  awardCommunityPoints: (points: number) => void;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
@@ -107,53 +95,40 @@ const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'msg_1',
     sender: 'bot',
-    text: 'Namaste! 🙏 I am your Swachhata Assistant for India’s 8-Time Cleanest City. How can I help you keep Indore clean today?',
-    timestamp: 'Just now',
+    text: 'Namaste! I am Swachhata AI Co-Pilot for Indore Municipal Corporation. How can I assist you today?',
+    timestamp: '09:00 AM',
   },
 ];
-
-const INITIAL_COMMERCIAL_BOOKING: CommercialWasteBooking = {
-  businessName: 'Verma Sweet House & Restaurant',
-  gstNumber: '23AABCV1234F1Z8',
-  tradeType: 'restaurant',
-  wasteVolume: 'Daily Commercial Wet & Dry (50-80 kg)',
-  pickupSlot: 'Daily Evening (21:30 PM)',
-  monthlyFee: 650,
-  complianceCertId: 'IMC-COM-2026-8891',
-};
 
 export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('splash');
-  const [screenParams, setScreenParams] = useState<any>(null);
   const [historyStack, setHistoryStack] = useState<ScreenId[]>(['splash']);
+  const [screenParams, setScreenParams] = useState<any>(null);
   const [activeTab, setActiveTabState] = useState<BottomTab>('home');
-  
+
   const [selectedWard, setSelectedWard] = useState<Ward>(MOCK_WARDS[0]);
-  const [userPhone, setUserPhone] = useState<string>('9826012345');
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
-  
-  // Demo toggles
   const [billState, setBillState] = useState<BillState>('unpaid');
   const [vanStatus, setVanStatus] = useState<VanStatus>('nearby');
   const [addressState, setAddressState] = useState<AddressState>('populated');
 
-  // Business entities
   const [propertyTax, setPropertyTax] = useState<PropertyTax>(MOCK_PROPERTY_TAX);
   const [transactions, setTransactions] = useState<PaymentTransaction[]>(MOCK_PAST_TRANSACTIONS);
+  const [ecoPoints, setEcoPoints] = useState<number>(340);
+
   const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>(INITIAL_SAVED_ADDRESSES);
   const [tickets, setTickets] = useState<ComplaintTicket[]>([INITIAL_COMPLAINT]);
-  const [ecoPoints, setEcoPoints] = useState<number>(250);
-  
-  const [pickupDraft, setPickupDraft] = useState<any>({
-    wasteType: 'Dry Waste',
-    quantityTier: 'Medium (up to 25kg)',
+
+  const [pickupForm, setPickupForm] = useState({
+    wasteType: 'garden',
+    fleetId: 'fleet_medium',
+    address: 'Scheme 54, Vijay Nagar, Indore',
+    quantityTier: 'Medium (30kg - 100kg)',
   });
   const [selectedProduct, setSelectedProduct] = useState<EcoProduct | undefined>(undefined);
   const [selectedComplaintCategory, setSelectedComplaintCategory] = useState<any>(null);
   
   const [publicToilets] = useState<PublicToilet[]>(MOCK_PUBLIC_TOILETS);
-  const [commercialBooking, setCommercialBooking] = useState<CommercialWasteBooking>(INITIAL_COMMERCIAL_BOOKING);
 
   const [messages, setMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
 
@@ -166,8 +141,7 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCurrentScreen(screen);
     setHistoryStack((prev) => [...prev, screen]);
 
-    // Sync tab highlight
-    if (screen === 'home' || screen === 'full_map' || screen === 'toilet_locator' || screen === 'commercial_waste') setActiveTabState('home');
+    if (screen === 'home' || screen === 'full_map' || screen === 'toilet_locator') setActiveTabState('home');
     else if (screen === 'category_select' || screen === 'evidence_location' || screen === 'complaint_confirm') setActiveTabState('raise_query');
     else if (screen === 'chat') setActiveTabState('chatbot');
     else if (screen === 'ecostore_grid' || screen === 'pavitra_scheduler' || screen === 'product_detail') setActiveTabState('ecostore');
@@ -273,9 +247,6 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       case 'chip_toilets':
         navigateTo('toilet_locator');
         break;
-      case 'chip_commercial':
-        navigateTo('commercial_waste');
-        break;
       case 'chip_track_van':
         navigateTo('full_map');
         break;
@@ -302,18 +273,13 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         language,
         setLanguage,
         currentScreen,
-        screenParams,
-        historyStack,
         navigateTo,
         goBack,
+        screenParams,
         activeTab,
         setActiveTab,
         selectedWard,
         setSelectedWard,
-        userPhone,
-        setUserPhone,
-        isLoggedIn,
-        setIsLoggedIn,
         billState,
         setBillState,
         vanStatus,
@@ -324,25 +290,23 @@ export const AppStateProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setPropertyTax,
         transactions,
         addTransaction,
+        ecoPoints,
+        setEcoPoints,
+        awardCommunityPoints,
         savedAddresses,
         addSavedAddress,
         tickets,
         addTicket,
-        ecoPoints,
-        setEcoPoints,
-        pickupDraft,
-        setPickupDraft,
+        pickupForm,
+        setPickupForm,
         selectedProduct,
         setSelectedProduct,
-        messages,
-        sendMessage,
-        handleChipClick,
         selectedComplaintCategory,
         setSelectedComplaintCategory,
         publicToilets,
-        commercialBooking,
-        setCommercialBooking,
-        awardCommunityPoints,
+        messages,
+        sendMessage,
+        handleChipClick,
       }}
     >
       {children}

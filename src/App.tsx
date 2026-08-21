@@ -37,7 +37,6 @@ import SavedAddressesScreen from './components/screens/profile/SavedAddressesScr
 import HelpdeskScreen from './components/screens/profile/HelpdeskScreen';
 
 import PublicToiletLocatorScreen from './components/screens/toilets/PublicToiletLocatorScreen';
-import CommercialWasteScreen from './components/screens/commercial/CommercialWasteScreen';
 
 const RouterContent: React.FC = () => {
   const { currentScreen } = useAppState();
@@ -60,8 +59,6 @@ const RouterContent: React.FC = () => {
       return <FullMapScreen />;
     case 'toilet_locator':
       return <PublicToiletLocatorScreen />;
-    case 'commercial_waste':
-      return <CommercialWasteScreen />;
 
     // Raise Query & Spot-a-Dump
     case 'category_select':

@@ -14,8 +14,7 @@ import {
   Flame,
   Award,
   ShieldCheck,
-  Building,
-  Store
+  Building
 } from 'lucide-react';
 
 const HomeScreen: React.FC = () => {
@@ -34,27 +33,31 @@ const HomeScreen: React.FC = () => {
   return (
     <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 font-sans">
       
-      {/* 1. Clean Municipal Blue Header with 8x National Cleanest City Seal */}
+      {/* 1. Clean Municipal Blue Header with 8x National Cleanest City Seal & IMC Logo */}
       <div className="bg-gradient-to-r from-municipal-blue via-blue-600 to-municipal-darkBlue text-white p-4 rounded-2xl shadow-md relative overflow-hidden">
-        {/* Subtle background decorative emblem */}
         <div className="absolute -right-6 -bottom-6 w-28 h-28 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
 
         <div className="flex items-center justify-between gap-3">
-          <div className="space-y-0.5">
-            <div className="flex items-center gap-1.5 text-blue-100 text-xs font-semibold">
-              <span>{language === 'hi' ? 'इंदौर नगर निगम' : 'Indore Municipal Corporation'}</span>
-              <span>•</span>
-              <span className="text-emerald-300 font-bold">{selectedWard.name}</span>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-white p-0.5 shadow-xs shrink-0">
+                <img src="/imc_logo.png" alt="IMC Emblem" className="w-full h-full object-contain" />
+              </div>
+              <span className="text-blue-100 text-xs font-semibold">{selectedWard.name}</span>
             </div>
+
             <h2 className="text-lg font-bold text-white tracking-tight">
-              {language === 'hi' ? 'नमस्ते, राजेश कुमार 👋' : 'Namaste, Rajesh Kumar 👋'}
+              {language === 'hi' ? 'नमस्ते, रिचा कानूनगो 👋' : 'Namaste, Richa Kanungo 👋'}
             </h2>
+            <p className="text-[10px] text-emerald-300 font-medium">
+              Project WISE • Waste Innovation for Sustainable Environment
+            </p>
           </div>
 
-          {/* Prestigious 8x Clean City Achievement Seal (Clickable for details) */}
+          {/* 8x Clean City Seal Button */}
           <button
             onClick={() => setShowCleanCitySealModal(true)}
-            className="group relative flex flex-col items-center bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 text-slate-950 px-3 py-1.5 rounded-2xl shadow-lg border border-amber-200 hover:scale-105 active:scale-95 transition-transform shrink-0"
+            className="group relative flex flex-col items-center bg-gradient-to-b from-amber-300 via-amber-400 to-yellow-500 text-slate-950 px-2.5 py-1.5 rounded-2xl shadow-lg border border-amber-200 hover:scale-105 active:scale-95 transition-transform shrink-0"
             title="View Swachh Survekshan 8x National Award Seal"
           >
             <div className="flex items-center gap-0.5 text-[8px] font-black tracking-tighter text-amber-950 uppercase">
@@ -110,7 +113,7 @@ const HomeScreen: React.FC = () => {
                   {language === 'hi' ? 'कचरा गाड़ी ~3 मिनट में आ रही है' : 'Garbage Van Arriving in ~3 mins'}
                 </div>
                 <div className="text-[10px] text-emerald-700">
-                  Entering Scheme 54 Residential Lane
+                  Driver: Abhigya • Tipper Van #42
                 </div>
               </div>
             </div>
@@ -130,7 +133,7 @@ const HomeScreen: React.FC = () => {
                   {language === 'hi' ? 'गाड़ी आपके वार्ड से आगे है' : 'Van not nearby currently'}
                 </span>
                 <span className="text-[10px] text-amber-700">
-                  Next scheduled collection pass at 02:30 PM (Tipper Van #42)
+                  Next scheduled pass at 02:30 PM (Driver: Abhigya)
                 </span>
               </div>
             </div>
@@ -157,150 +160,134 @@ const HomeScreen: React.FC = () => {
         />
       </section>
 
-      {/* 3. Quick Civic Utilities Bar (Toilet Locator & Commercial Flow) */}
-      <section className="grid grid-cols-2 gap-3">
+      {/* 3. Core Civic Utilities Section */}
+      <section className="space-y-3">
+        {/* Card A: Public Toilet Locator (CT/PT & She-Lounge) */}
         <div
           onClick={() => navigateTo('toilet_locator')}
-          className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-start gap-2.5"
+          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:border-pink-500 transition touch-active flex items-center justify-between"
         >
-          <div className="w-9 h-9 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
-            <Building className="w-4 h-4" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
-              <span className="truncate">{language === 'hi' ? 'सार्वजनिक शौचालय' : 'Public Toilets'}</span>
-              <span className="bg-pink-100 text-pink-700 text-[8px] font-bold px-1 rounded shrink-0">Pink</span>
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0">
+              <Building className="w-5 h-5" />
             </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
-              {language === 'hi' ? '5-स्टार CT/PT व शी-लाउंज' : 'Find nearest clean restrooms'}
-            </p>
-          </div>
-        </div>
-
-        <div
-          onClick={() => navigateTo('commercial_waste')}
-          className="bg-white rounded-2xl p-3.5 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-start gap-2.5"
-        >
-          <div className="w-9 h-9 rounded-xl bg-blue-100 text-municipal-blue flex items-center justify-center shrink-0">
-            <Store className="w-4 h-4" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-slate-900 flex items-center gap-1">
-              <span className="truncate">{language === 'hi' ? 'व्यावसायिक कचरा' : 'Commercial'}</span>
-              <span className="bg-blue-100 text-blue-700 text-[8px] font-bold px-1 rounded shrink-0">GST</span>
-            </div>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-tight line-clamp-2">
-              {language === 'hi' ? 'दुकान व होटल पिकअप' : 'Shops & market logistics'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Core Utility Cards Grid */}
-
-      {/* Card A: Waste Utility Bill (BBPS) */}
-      <section
-        onClick={() => navigateTo('bill_summary')}
-        className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-center justify-between"
-      >
-        <div className="flex items-start gap-3 min-w-0 flex-1">
-          <div className="w-10 h-10 rounded-xl bg-municipal-lightBlue text-municipal-blue flex items-center justify-center shrink-0">
-            <CreditCard className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold text-slate-900 truncate">
-              {language === 'hi' ? 'कचरा प्रबंधन शुल्क बिल' : 'Waste Utility Bill Payment'}
-            </div>
-
-            {billState === 'unpaid' && (
-              <div className="mt-1 flex items-center gap-2">
-                <span className="text-sm font-bold text-civic-darkYellow">₹{propertyTax.amountDue}</span>
-                <Badge variant="warning">
-                  {language === 'hi' ? 'देय तिथि: 15 अगस्त' : 'Due: 15 Aug'}
-                </Badge>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                <span>{language === 'hi' ? 'सार्वजनिक शौचालय एवं शी-लाउंज' : 'Public Toilets & She-Lounges'}</span>
+                <span className="bg-pink-100 text-pink-700 text-[9px] font-bold px-1.5 py-0.2 rounded">5-Star</span>
               </div>
-            )}
-
-            {billState === 'paid' && (
-              <div className="mt-1 flex items-center gap-2">
-                <Badge variant="success">
-                  {language === 'hi' ? 'भुगतान हुआ • अगस्त 2026' : 'Paid • Aug 2026'}
-                </Badge>
-              </div>
-            )}
-
-            {billState === 'unlinked' && (
-              <p className="text-xs text-municipal-blue font-semibold mt-1">
-                {language === 'hi' ? '+ अपनी संपत्ति कर आईडी लिंक करें' : '+ Link your Property Tax ID'}
+              <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                {language === 'hi' ? '5-स्टार स्वच्छ CT/PT व शी-लाउंज खोजें' : 'Find nearest 5-Star CT/PT & Pink Restrooms'}
               </p>
-            )}
-          </div>
-        </div>
-
-        <ArrowRight className="w-4 h-4 text-slate-400 shrink-0 ml-2" />
-      </section>
-
-      {/* Card B: On-Demand Bulk Waste Pickup */}
-      <section
-        onClick={() => navigateTo('pickup_waste_type')}
-        className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-4 shadow-md cursor-pointer hover:brightness-105 transition touch-active flex items-center justify-between"
-      >
-        <div className="flex items-center gap-3 min-w-0 flex-1">
-          <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur text-white flex items-center justify-center shrink-0">
-            <PackageCheck className="w-5 h-5" />
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-xs font-bold truncate">
-              {language === 'hi' ? 'बल्क कचरा पिकअप (Porter स्टाइल)' : 'On-Demand Bulk Pickup'}
             </div>
-            <p className="text-[11px] text-emerald-100 opacity-90 mt-0.5 line-clamp-1">
-              {language === 'hi'
-                ? 'सूखा/मलबे/बगीचे का कचरा उठाने हेतु वाहन बुक करें'
-                : 'Book dedicated vehicle for heavy debris & bulk scrap'}
-            </p>
           </div>
+          <ArrowRight className="w-4 h-4 text-slate-400 shrink-0 ml-2" />
         </div>
 
-        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 ml-2">
-          <ArrowRight className="w-4 h-4 text-white" />
-        </div>
-      </section>
-
-      {/* Card C: Pavitra Sacred Waste & Eco-Store Preview */}
-      <section className="grid grid-cols-2 gap-3">
+        {/* Card B: Waste Utility Bill (BBPS) */}
         <div
-          onClick={() => navigateTo('pavitra_scheduler')}
-          className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 cursor-pointer hover:bg-amber-500/20 transition touch-active flex flex-col justify-between"
+          onClick={() => navigateTo('bill_summary')}
+          className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm cursor-pointer hover:border-municipal-blue transition touch-active flex items-center justify-between"
         >
-          <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center mb-2 shadow-sm">
-            <Flame className="w-4 h-4" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-amber-950">
-              {language === 'hi' ? 'पवित्र पुष्प कचरा' : 'Pavitra Sacred Pickup'}
+          <div className="flex items-start gap-3 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-municipal-lightBlue text-municipal-blue flex items-center justify-center shrink-0">
+              <CreditCard className="w-5 h-5" />
             </div>
-            <p className="text-[10px] text-amber-800 mt-0.5 line-clamp-1">
-              {language === 'hi' ? 'पूजा/फूल कचरा नि:शुल्क पिकअप' : 'Free floral waste schedule'}
-            </p>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold text-slate-900 truncate">
+                {language === 'hi' ? 'कचरा प्रबंधन शुल्क बिल' : 'Waste Utility Bill Payment'}
+              </div>
+
+              {billState === 'unpaid' && (
+                <div className="mt-1 flex items-center gap-2">
+                  <span className="text-sm font-bold text-civic-darkYellow">₹{propertyTax.amountDue}</span>
+                  <Badge variant="warning">
+                    {language === 'hi' ? 'देय तिथि: 15 अगस्त' : 'Due: 15 Aug'}
+                  </Badge>
+                </div>
+              )}
+
+              {billState === 'paid' && (
+                <div className="mt-1 flex items-center gap-2">
+                  <Badge variant="success">
+                    {language === 'hi' ? 'भुगतान हुआ • अगस्त 2026' : 'Paid • Aug 2026'}
+                  </Badge>
+                </div>
+              )}
+
+              {billState === 'unlinked' && (
+                <p className="text-xs text-municipal-blue font-semibold mt-1">
+                  {language === 'hi' ? '+ अपनी संपत्ति कर आईडी लिंक करें' : '+ Link your Property Tax ID'}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <ArrowRight className="w-4 h-4 text-slate-400 shrink-0 ml-2" />
+        </div>
+
+        {/* Card C: On-Demand Bulk Waste Pickup */}
+        <div
+          onClick={() => navigateTo('pickup_waste_type')}
+          className="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-4 shadow-md cursor-pointer hover:brightness-105 transition touch-active flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur text-white flex items-center justify-center shrink-0">
+              <PackageCheck className="w-5 h-5" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-bold truncate">
+                {language === 'hi' ? 'बल्क कचरा पिकअप (Porter स्टाइल)' : 'On-Demand Bulk Pickup'}
+              </div>
+              <p className="text-[11px] text-emerald-100 opacity-90 mt-0.5 line-clamp-1">
+                {language === 'hi'
+                  ? 'सूखा/मलबे/बगीचे का कचरा उठाने हेतु वाहन बुक करें'
+                  : 'Book dedicated vehicle for heavy debris & garden scrap'}
+              </p>
+            </div>
+          </div>
+
+          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 ml-2">
+            <ArrowRight className="w-4 h-4 text-white" />
           </div>
         </div>
 
-        <div
-          onClick={() => navigateTo('ecostore_grid')}
-          className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 cursor-pointer hover:bg-emerald-500/20 transition touch-active flex flex-col justify-between"
-        >
-          <div className="w-8 h-8 rounded-lg bg-eco-green text-white flex items-center justify-center mb-2 shadow-sm">
-            <ShoppingBag className="w-4 h-4" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-emerald-950">
-              {language === 'hi' ? 'इको-स्टोर बाज़ार' : 'Eco-Store SHG Market'}
+        {/* Card Grid D: Pavitra Sacred Waste & Eco-Store Preview */}
+        <div className="grid grid-cols-2 gap-3">
+          <div
+            onClick={() => navigateTo('pavitra_scheduler')}
+            className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3.5 cursor-pointer hover:bg-amber-500/20 transition touch-active flex flex-col justify-between"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center mb-2 shadow-sm">
+              <Flame className="w-4 h-4" />
             </div>
-            <p className="text-[10px] text-emerald-800 mt-0.5 line-clamp-1">
-              {language === 'hi'
-                ? `इको कॉइन्स: ${ecoPoints} PTS • 80G छूट`
-                : `Balance: ${ecoPoints} PTS • 80G Tax Free`}
-            </p>
+            <div>
+              <div className="text-xs font-bold text-amber-950">
+                {language === 'hi' ? 'पवित्र पुष्प कचरा' : 'Pavitra Sacred Pickup'}
+              </div>
+              <p className="text-[10px] text-amber-800 mt-0.5 line-clamp-1">
+                {language === 'hi' ? 'पूजा/फूल कचरा नि:शुल्क पिकअप' : 'Free floral waste schedule'}
+              </p>
+            </div>
+          </div>
+
+          <div
+            onClick={() => navigateTo('ecostore_grid')}
+            className="bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-3.5 cursor-pointer hover:bg-emerald-500/20 transition touch-active flex flex-col justify-between"
+          >
+            <div className="w-8 h-8 rounded-lg bg-eco-green text-white flex items-center justify-center mb-2 shadow-sm">
+              <ShoppingBag className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-emerald-950">
+                {language === 'hi' ? 'इको-स्टोर बाज़ार' : 'Eco-Store SHG Market'}
+              </div>
+              <p className="text-[10px] text-emerald-800 mt-0.5 line-clamp-1">
+                {language === 'hi'
+                  ? `इको कॉइन्स: ${ecoPoints} PTS • 80G छूट`
+                  : `Balance: ${ecoPoints} PTS • 80G Tax Free`}
+              </p>
+            </div>
           </div>
         </div>
       </section>
