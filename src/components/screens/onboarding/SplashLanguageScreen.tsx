@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAppState } from '../../../context/AppStateContext';
 import { Button } from '../../common/Button';
-import { Sparkles, MapPin, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Sparkles, MapPin, ArrowRight } from 'lucide-react';
 
 const SplashLanguageScreen: React.FC = () => {
   const { language, setLanguage, navigateTo } = useAppState();
   const [stage, setStage] = useState<'intro' | 'language'>('intro');
 
+  // Auto-advance from animated intro to language selection after 2.5s
   useEffect(() => {
     if (stage === 'intro') {
       const timer = setTimeout(() => {
@@ -19,18 +20,13 @@ const SplashLanguageScreen: React.FC = () => {
   return (
     <div className="flex-1 bg-gradient-to-b from-municipal-blue via-municipal-darkBlue to-slate-950 text-white p-5 flex flex-col justify-between items-center text-center relative overflow-hidden select-none font-sans">
       
-      {/* Background Glow */}
+      {/* Background Subtle Pulsing Glow Effect */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
 
-      {/* STAGE 1: Animated Splash Intro */}
+      {/* STAGE 1: Animated Opening Splash (WISE Logo & NERDS TSP Intro) */}
       {stage === 'intro' ? (
-        <div className="flex-1 w-full flex flex-col justify-between items-center py-6 animate-in fade-in zoom-in-95 duration-700">
-          <div className="w-full flex justify-between items-center">
-            {/* IMC Crest Logo */}
-            <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow-md border border-white/60">
-              <img src="/imc_logo.png" alt="IMC Crest Logo" className="w-full h-full object-contain" />
-            </div>
-
+        <div className="flex-1 w-full flex flex-col justify-between items-center py-8 animate-in fade-in zoom-in-95 duration-700">
+          <div className="w-full flex justify-end">
             <button
               onClick={() => setStage('language')}
               className="text-[11px] text-blue-200/80 hover:text-white bg-white/10 px-3 py-1 rounded-full border border-white/20 transition"
@@ -39,8 +35,8 @@ const SplashLanguageScreen: React.FC = () => {
             </button>
           </div>
 
-          {/* WISE Logo Emblem */}
-          <div className="flex flex-col items-center my-auto space-y-4">
+          {/* Animated WISE Logo Emblem */}
+          <div className="flex flex-col items-center my-auto space-y-5">
             <div className="relative group">
               <div className="absolute -inset-2 bg-gradient-to-r from-emerald-400 via-blue-400 to-amber-400 rounded-3xl blur-md opacity-40 group-hover:opacity-75 transition duration-1000 animate-pulse"></div>
               <div className="relative bg-white rounded-3xl p-4 shadow-2xl border border-white/80 w-44 h-44 flex items-center justify-center">
@@ -57,10 +53,10 @@ const SplashLanguageScreen: React.FC = () => {
                 Project WISE
               </h1>
               <p className="text-xs font-bold text-emerald-300 tracking-wide">
-                Waste Innovation for Sustainable Environment
+                Powered by NERDS
               </p>
-              <p className="text-[10px] text-blue-200/80 leading-relaxed font-medium">
-                Indore Municipal Corporation (IMC) • 8x Cleanest City
+              <p className="text-[10px] text-blue-200/90 leading-relaxed font-medium">
+                Waste Innovation for Sustainable Environment
               </p>
             </div>
           </div>
@@ -68,22 +64,26 @@ const SplashLanguageScreen: React.FC = () => {
           {/* Bottom Accreditation */}
           <div className="space-y-1 pt-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-[10px] font-semibold border border-white/15">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <img src="/imc_logo.png" alt="IMC Logo" className="w-4 h-4 object-contain rounded-full bg-white/20 p-0.5" />
               <span>Indore Municipal Corporation (IMC)</span>
             </div>
             <p className="text-[9px] text-white/40">
-              Technology Service Provider: Project WISE Platform
+              Technology Service Provider (TSP): NERDS Technology
             </p>
           </div>
         </div>
       ) : (
-        /* STAGE 2: Language Selection */
+        /* STAGE 2: Language Choose Button Page (IMC Emblem Header) */
         <div className="flex-1 w-full flex flex-col justify-between items-center py-3 animate-in fade-in duration-500">
           
-          {/* Header with Official IMC Logo */}
+          {/* Top Header: IMC ONLY Emblem */}
           <div className="w-full pt-2 flex flex-col items-center">
-            <div className="w-16 h-16 rounded-full bg-white p-1 text-municipal-blue font-black flex items-center justify-center shadow-xl border-2 border-white/40 mb-2">
-              <img src="/imc_logo.png" alt="Indore Municipal Corporation Crest" className="w-full h-full object-contain" />
+            <div className="w-16 h-16 rounded-2xl bg-white p-1 shadow-xl border-2 border-white/40 mb-2 flex items-center justify-center">
+              <img
+                src="/imc_logo.png"
+                alt="Indore Municipal Corporation Emblem"
+                className="w-full h-full object-contain"
+              />
             </div>
 
             <h1 className="text-lg font-bold text-white tracking-tight">
@@ -97,6 +97,7 @@ const SplashLanguageScreen: React.FC = () => {
           {/* WISE Logo & Language Choose Card */}
           <div className="w-full bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-4 shadow-2xl my-4 space-y-4">
             
+            {/* WISE Logo Displayed Inside Card */}
             <div className="flex items-center justify-center gap-3 py-1">
               <div className="bg-white rounded-2xl p-2 shadow-lg border border-white/80 h-16 w-36 flex items-center justify-center">
                 <img
@@ -139,7 +140,7 @@ const SplashLanguageScreen: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom Actions */}
+          {/* Bottom Actions & NERDS TSP Mention */}
           <div className="w-full space-y-3 pb-2">
             <Button variant="eco" onClick={() => navigateTo('mobile_otp')}>
               <span>{language === 'hi' ? 'आगे बढ़ें (Continue)' : 'Continue to Sign In'}</span>
@@ -149,6 +150,10 @@ const SplashLanguageScreen: React.FC = () => {
             <div className="text-[10px] text-white/60 space-y-0.5">
               <p className="font-semibold text-emerald-300">
                 Project WISE • Waste Innovation for Sustainable Environment
+              </p>
+              <p className="text-[9px] text-white/40 flex items-center justify-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-emerald-400" />
+                Technology Service Provider (TSP): NERDS Technology
               </p>
             </div>
           </div>

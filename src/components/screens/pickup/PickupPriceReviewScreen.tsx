@@ -1,13 +1,18 @@
 import React from 'react';
 import { useAppState } from '../../../context/AppStateContext';
 import { Button } from '../../common/Button';
-import { PICKUP_FLEET_OPTIONS } from '../../../data/mockData';
 import { ArrowLeft, Truck, MapPin, Receipt } from 'lucide-react';
 
 const PickupPriceReviewScreen: React.FC = () => {
-  const { language, navigateTo, goBack, pickupForm } = useAppState();
+  const { language, navigateTo, goBack, pickupDraft } = useAppState();
 
-  const fleet = PICKUP_FLEET_OPTIONS.find((f) => f.id === pickupForm.fleetId) || PICKUP_FLEET_OPTIONS[1];
+  const fleet = pickupDraft?.selectedFleet || {
+    name: 'Mini Pickup (3-Wheeler Tipper)',
+    nameHi: 'मिनी पिकअप (3-व्हीलर टिपर)',
+    priceMin: 100,
+    priceMax: 120,
+    eta: '10 mins',
+  };
 
   const baseFare = fleet.priceMin || 100;
   const distanceFee = 15;
@@ -19,7 +24,7 @@ const PickupPriceReviewScreen: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between font-sans">
+    <div className="flex-1 bg-slate-50 p-4 space-y-4 pb-6 flex flex-col justify-between">
       <div>
         <button
           onClick={goBack}
@@ -48,11 +53,11 @@ const PickupPriceReviewScreen: React.FC = () => {
               <div className="text-xs font-bold text-slate-900">
                 {language === 'hi' ? fleet.nameHi : fleet.name}
               </div>
-              <div className="text-[10px] text-slate-500 font-semibold">{pickupForm.quantityTier}</div>
+              <div className="text-[10px] text-slate-500">{pickupDraft?.wasteType || 'Dry Waste'}</div>
             </div>
           </div>
 
-          <span className="text-xs font-bold text-eco-darkGreen bg-emerald-100 px-2.5 py-1 rounded-full shrink-0">
+          <span className="text-xs font-bold text-eco-darkGreen bg-emerald-100 px-2.5 py-1 rounded-full">
             ETA: {fleet.eta}
           </span>
         </div>
@@ -90,7 +95,7 @@ const PickupPriceReviewScreen: React.FC = () => {
           <MapPin className="w-4 h-4 text-municipal-blue shrink-0" />
           <div className="truncate">
             <span className="font-semibold text-slate-700 block">{language === 'hi' ? 'पिकअप स्थान:' : 'Pickup Address:'}</span>
-            <span className="text-[11px] text-slate-500">{pickupForm.address || 'Scheme 54, Vijay Nagar, Indore'}</span>
+            <span className="text-[11px] text-slate-500">{pickupDraft?.locationAddress || 'Scheme 54, Vijay Nagar, Indore'}</span>
           </div>
         </div>
       </div>
