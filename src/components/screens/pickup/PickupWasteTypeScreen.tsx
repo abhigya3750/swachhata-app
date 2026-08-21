@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAppState } from '../../../context/AppStateContext';
 import { Button } from '../../common/Button';
 import { ArrowLeft, Check } from 'lucide-react';
@@ -6,8 +6,16 @@ import { ArrowLeft, Check } from 'lucide-react';
 const PickupWasteTypeScreen: React.FC = () => {
   const { language, navigateTo, goBack, pickupForm, setPickupForm } = useAppState();
 
-  const [wasteType, setWasteType] = useState<string>(pickupForm.wasteType || 'garden');
-  const [quantityTier, setQuantityTier] = useState<string>(pickupForm.quantityTier || 'Medium (30kg - 100kg)');
+  const wasteType = pickupForm.wasteType || 'garden';
+  const quantityTier = pickupForm.quantityTier || 'Medium (30kg - 100kg)';
+
+  const setWasteType = (type: string) => {
+    setPickupForm((prev) => ({ ...prev, wasteType: type }));
+  };
+
+  const setQuantityTier = (tier: string) => {
+    setPickupForm((prev) => ({ ...prev, quantityTier: tier }));
+  };
 
   const wasteTypes = [
     { id: 'garden', labelEn: 'Garden / Green Waste', labelHi: 'बगीचे का कचरा / पत्तियाँ', icon: '🍃' },
@@ -15,7 +23,6 @@ const PickupWasteTypeScreen: React.FC = () => {
     { id: 'debris', labelEn: 'C&D Debris / Renovation', labelHi: 'निर्माण मलबा / रिपेयर', icon: '🧱' },
   ];
 
-  // Dynamic weight options calculated per selected waste category
   const getDynamicWeightTiers = (category: string) => {
     switch (category) {
       case 'garden':
@@ -42,7 +49,6 @@ const PickupWasteTypeScreen: React.FC = () => {
 
   const currentTiers = getDynamicWeightTiers(wasteType);
 
-  // Auto select valid tier if switching waste category
   useEffect(() => {
     const validIds = currentTiers.map((t) => t.id);
     if (!validIds.includes(quantityTier)) {
@@ -51,15 +57,12 @@ const PickupWasteTypeScreen: React.FC = () => {
   }, [wasteType]);
 
   const handleProceed = () => {
-    // Determine recommended fleet based on weight
     let suggestedFleet = 'fleet_medium';
     if (quantityTier.includes('Small')) suggestedFleet = 'fleet_small';
     else if (quantityTier.includes('Large') || quantityTier.includes('500kg+')) suggestedFleet = 'fleet_large';
 
     setPickupForm((prev) => ({
       ...prev,
-      wasteType,
-      quantityTier,
       fleetId: suggestedFleet,
     }));
     navigateTo('pickup_fleet');
